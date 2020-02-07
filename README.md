@@ -6,7 +6,7 @@ Spring Boot
 Maven
 MySQL
 Docker
-Minikube for Development Environment
+We will use minikube to run a local kubernetes instance. We will access this local kubernetes with the client called ```kubectl```.
 
 
 ## Assumptions:
@@ -25,3 +25,4 @@ Minikube for Development Environment
 3. Logging.
 4. Cloud.
 5. Monitoring.
+6. Securing Containers.

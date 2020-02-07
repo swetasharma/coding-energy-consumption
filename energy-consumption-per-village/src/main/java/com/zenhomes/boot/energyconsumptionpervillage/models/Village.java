@@ -1,30 +1,33 @@
-package com.zenhomes.boot.energyconsumptionpervillage.model;
+package com.zenhomes.boot.energyconsumptionpervillage.models;
 
 import org.springframework.data.annotation.Id;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+
 public class Village {
     @Id
-    private Long id;
+    private long id;
+    @NotBlank
     private String villageName;
     private LocalDateTime createdDate;
 
     public Village(){
     }
 
-    Village(Long id, String villageName){
+    public Village(long id, String villageName){
         this.id = id;
         this.villageName = villageName;
         this.createdDate = LocalDateTime.now();
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

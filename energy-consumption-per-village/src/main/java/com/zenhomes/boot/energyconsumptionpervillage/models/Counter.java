@@ -1,12 +1,15 @@
-package com.zenhomes.boot.energyconsumptionpervillage.model;
+package com.zenhomes.boot.energyconsumptionpervillage.models;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Counter {
-
+    @NotNull
     private Long counterId;
+    @NotNull
     private Long villageId;
+    @NotNull
     private Double amount;
     private LocalDateTime createdDate;
 

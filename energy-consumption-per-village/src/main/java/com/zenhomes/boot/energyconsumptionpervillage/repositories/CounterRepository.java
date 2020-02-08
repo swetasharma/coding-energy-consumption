@@ -19,7 +19,7 @@ public class CounterRepository{
                 counter.getCounterId(), counter.getVillageId(), counter.getAmount(), LocalDateTime.now());
     }
 
-    public List<Map<String,Object>> consumption_report(){
+    public List<Map<String,Object>> consumptionReport(){
         List<Map<String,Object>> energyConsumption =
                 jdbcTemplate.queryForList("select Village.villageName, sum(Counter.amount) amount" +
                         "FROM Counter" +

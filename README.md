@@ -2,11 +2,8 @@
 The system that allows to receive and collect data about energy consumption from different villages. As a result, the system should, on demand, give out the consumption report per village for the last 24h.
 
 ## Stack:
-Spring Boot
-Maven
-MySQL
-Docker
-We will use minikube to run a local kubernetes instance. We will access this local kubernetes with the client called ```kubectl```.
+Spring Boot, Maven, MySQL, Docker.
+We will use ```minikube``` to run a local kubernetes instance. We will access this local kubernetes with the client called ```kubectl```.
 
 
 ## Assumptions:

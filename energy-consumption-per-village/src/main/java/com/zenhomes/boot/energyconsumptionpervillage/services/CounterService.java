@@ -5,11 +5,14 @@ import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import com.zenhomes.boot.energyconsumptionpervillage.repositories.CounterRepository;
 import com.zenhomes.boot.energyconsumptionpervillage.repositories.VillageRepository;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class CounterService{
@@ -68,5 +71,7 @@ public class CounterService{
         return restTemplate.getForObject(uri, Village.class);
     }
 
-
+    public List<Map<String,Object>> getEnergyConsumptionReport(){
+        return counterRepository.consumptionReport();
+    }
 }

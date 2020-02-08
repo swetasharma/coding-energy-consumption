@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: energy-consumption-app
-          build: .
+          image: energy-consumption-app:v1
           resources:
             limits:
               memory: "200Mi"

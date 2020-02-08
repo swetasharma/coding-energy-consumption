@@ -1,33 +1,29 @@
 package com.zenhomes.boot.energyconsumptionpervillage.services;
 
+import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterDao;
+import com.zenhomes.boot.energyconsumptionpervillage.dao.VillageDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
-import com.zenhomes.boot.energyconsumptionpervillage.repositories.CounterRepository;
-import com.zenhomes.boot.energyconsumptionpervillage.repositories.VillageRepository;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CounterService{
 
-    final String uri = "https://europe-west2-zenhomes-development-project.cloudfunctions.net/counters/1";
+    private String uri = "https://europe-west2-zenhomes-development-project.cloudfunctions.net/counters/";
 
     @Autowired
-    private CounterRepository counterRepository;
+    private CounterDao counterDao;
 
 
     @Autowired
-    private VillageRepository villageRepository;
+    private VillageDao villageDao;
 
     @Autowired
     RestTemplate restTemplate;
@@ -36,18 +32,18 @@ public class CounterService{
     public void save(CounterRegister counterRegister) {
         if(isAmountValid(counterRegister.amount)){
             //Here we are getting village name and id by hitting external url
-            Village village = this.getVillageDetails();
-            if(villageRepository.isVillageExists(village.getId())){
-                villageRepository.updateVillageName(new Village(village.getId(), village.getVillageName()));
+            Village village = this.getVillageDetails(counterRegister.counter_id);
+            if(villageDao.isVillageExists(village.getId())){
+                villageDao.updateVillageName(new Village(village.getId(), village.getVillageName()));
             }else{
-                villageRepository.save(new Village (village.getId(), village.getVillageName()));
+                villageDao.save(new Village (village.getId(), village.getVillageName()));
             }
             Counter counter = new Counter();
             counter.setCounterId(counterRegister.counter_id);
             counter.setAmount(counterRegister.amount);
             counter.setVillageId(village.getId());
             counter.setCreatedDate(LocalDateTime.now());
-            counterRepository.save(counter);
+            counterDao.save(counter);
         }else {
             throw new IllegalArgumentException("Amount cannot be zero or negative or alphanumeric");
         }
@@ -69,16 +65,29 @@ public class CounterService{
     /**
      * Hits the external link and get the village name and village id
      */
-    private Village getVillageDetails()
+    private Village getVillageDetails(long counterId)
     {
-        return restTemplate.getForObject(uri, Village.class);
+        return restTemplate.getForObject(uri.concat(String.valueOf(counterId)), Village.class);
     }
 
-    public List<Map<String,Object>> getEnergyConsumptionReport(){
+    public Map<String, List<EnergyConsumption>> getEnergyConsumptionReport(){
         List<EnergyConsumption> energyConsumptionsList = new ArrayList<>();
-        Iterator<Map<String, Object>> iterator =
-                counterRepository.consumptionReport().iterator();
-        EnergyConsumption energyConsumption = new EnergyConsumption();
-        return null;
+        Iterator<Map<String, Object>> iterator = counterDao.consumptionReport().iterator();
+
+        while(iterator.hasNext()) {
+            Map<String, Object> record = iterator.next();
+            Set<Map.Entry<String, Object>> entrySet = record.entrySet();
+            for(Map.Entry<String, Object> entry : entrySet){
+                EnergyConsumption energyConsumption = new EnergyConsumption();
+                energyConsumption.village_name = entry.getKey();
+                energyConsumption.consumption = Double.valueOf(entry.getValue().toString()).doubleValue();
+                energyConsumptionsList.add(energyConsumption);
+            }
+        }
+
+        Map<String, List<EnergyConsumption>> energyConsumptionReport = new HashMap<>();
+        energyConsumptionReport.put("villages", energyConsumptionsList);
+
+        return energyConsumptionReport;
     }
 }

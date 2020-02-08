@@ -4,7 +4,10 @@ import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.services.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,9 +22,8 @@ public class CounterController {
     CounterService counterService;
 
     /**
-     * Create counter,
-     * and returns the HTTP 201[CREATED] along with a LocationHeader containing the locations of newly created queue
-     * @return the HTTP 201[CREATED] along with a LocationHeader containing the locations of newly created counter
+     * Create counter
+     * @return the HTTP 201[CREATED]
      */
     @PostMapping("/counter_callback")
     @ResponseStatus(HttpStatus.CREATED)
@@ -29,8 +31,8 @@ public class CounterController {
         counterService.save(counterRegister);
     }
 
-    @GetMapping("/consumption_report?duration=24h")
-    public Map<String, EnergyConsumption> consumption_report(){
-        return null;
+    @GetMapping(value = "/consumption_report?duration=24h", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, List<EnergyConsumption>> consumption_report(){
+        return counterService.getEnergyConsumptionReport();
     }
 }

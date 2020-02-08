@@ -6,9 +6,9 @@ import java.util.Objects;
 
 public class Counter {
     @NotNull
-    private Long counterId;
+    private long counterId;
     @NotNull
-    private Long villageId;
+    private long villageId;
     @NotNull
     private Double amount;
     private LocalDateTime createdDate;
@@ -16,26 +16,26 @@ public class Counter {
     public Counter() {
     }
 
-    public Counter(Long counter_id, Long village_id, Double amount) {
+    public Counter(long counter_id, long village_id, Double amount) {
         this.counterId = counter_id;
         this.counterId = village_id;
         this.amount = amount;
         this.createdDate = LocalDateTime.now();
     }
 
-    public Long getCounterId() {
+    public long getCounterId() {
         return counterId;
     }
 
-    public void setCounterId(Long counterId) {
+    public void setCounterId(long counterId) {
         this.counterId = counterId;
     }
 
-    public Long getVillageId() {
+    public long getVillageId() {
         return villageId;
     }
 
-    public void setVillageId(Long villageId) {
+    public void setVillageId(long villageId) {
         this.villageId = villageId;
     }
 

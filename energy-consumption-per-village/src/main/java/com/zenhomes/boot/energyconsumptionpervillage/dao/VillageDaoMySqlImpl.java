@@ -1,6 +1,4 @@
-package com.zenhomes.boot.energyconsumptionpervillage.repositories;
-
-
+package com.zenhomes.boot.energyconsumptionpervillage.dao;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -9,8 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class VillageRepository{
-
+public class VillageDaoMySqlImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -19,9 +16,9 @@ public class VillageRepository{
                 "SELECT id, villageName FROM village",
                 (rs, rowNum) ->
                         new Village(
-                            rs.getLong("id"),
-                            rs.getString("villageName")
-                )
+                                rs.getLong("id"),
+                                rs.getString("villageName")
+                        )
         );
 
         return result;
@@ -41,7 +38,7 @@ public class VillageRepository{
      * @param id
      * @return
      */
-    public Village findById(Long id){
+    public Village findById(long id){
         return jdbcTemplate.queryForObject("SELECT id, villageName FROM village WHERE ID = ?", new Object[] { id }, new BeanPropertyRowMapper<Village>(Village.class));
     }
 

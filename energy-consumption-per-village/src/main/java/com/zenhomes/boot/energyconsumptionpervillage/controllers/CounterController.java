@@ -5,8 +5,6 @@ import com.zenhomes.boot.energyconsumptionpervillage.services.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,7 +30,7 @@ public class CounterController {
     }
 
     @GetMapping("/consumption_report?duration=24h")
-    public List<Map<String, EnergyConsumption>> consumption_report(){
+    public Map<String, EnergyConsumption> consumption_report(){
         return null;
     }
 }

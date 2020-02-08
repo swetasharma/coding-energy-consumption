@@ -18,8 +18,9 @@ We will use ```minikube``` to run a local kubernetes instance. We will access th
 
 ## ToDo:
 1. If possible do basic authentication on ``` POST /counter_callback ``` call.
-2. Generate REST Documentation.
-3. Logging.
-4. Cloud.
-5. Monitoring.
-6. Securing Containers.
+2. Implement mysql persistent volume.
+3. Generate REST Documentation.
+4. Logging.
+5. Cloud.
+6. Monitor services in Kubernetes.
+7. Securing Containers.

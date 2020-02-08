@@ -1,6 +1,7 @@
 package com.zenhomes.boot.energyconsumptionpervillage.services;
 
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
+import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import com.zenhomes.boot.energyconsumptionpervillage.repositories.CounterRepository;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +75,10 @@ public class CounterService{
     }
 
     public List<Map<String,Object>> getEnergyConsumptionReport(){
-        return counterRepository.consumptionReport();
+        List<EnergyConsumption> energyConsumptionsList = new ArrayList<>();
+        Iterator<Map<String, Object>> iterator =
+                counterRepository.consumptionReport().iterator();
+        EnergyConsumption energyConsumption = new EnergyConsumption();
+        return null;
     }
 }

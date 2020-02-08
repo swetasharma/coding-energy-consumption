@@ -6,13 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VillageService {
+public class VillageService{
 
     @Autowired
-    VillageRepository villageRepository;
+    private VillageRepository villageRepository;
 
-    public void addVillage(Village village){
-        villageRepository.save(village.getVillageName());
+
+    public void save(Village village) {
+        villageRepository.save(village);
+    }
+
+
+    public Village findById(Long id) {
+        return villageRepository.findById(id);
     }
 
 }

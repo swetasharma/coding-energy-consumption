@@ -27,18 +27,41 @@ public class VillageRepository{
         return result;
     }
 
-    public void save(String villageName) {
-        //Check if the village entry already exist then update else insert the entry into the table
-        //add this condition into service class
-        jdbcTemplate.update("INSERT INTO village(villageName) VALUES (?)",
-                villageName);
+    /**
+     * Create a new record in village table
+     * @param village
+     */
+    public void save(Village village) {
+        jdbcTemplate.update("INSERT INTO village(id, villageName) VALUES (?, ?)",
+                village.getId(), village.getVillageName());
     }
 
+    /**
+     * Get village details by Id
+     * @param id
+     * @return
+     */
     public Village findById(Long id){
         return jdbcTemplate.queryForObject("SELECT id, villageName FROM village WHERE ID = ?", new Object[] { id }, new BeanPropertyRowMapper<Village>(Village.class));
     }
 
-    public Village findByname(String villageName){
-        return jdbcTemplate.queryForObject("SELECT id, villageName FROM village WHERE villageName = ?", new Object[] { villageName }, new BeanPropertyRowMapper<Village>(Village.class));
+    /**
+     * Check if the village exist ot not
+     * @param Id
+     * @return
+     */
+    public boolean isVillageExists(long Id){
+        if(this.findById(Id) != null) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * If the record already exist we need to update the village name
+     * @param village
+     */
+    public void updateVillageName(Village village){
+        jdbcTemplate.update("UPDATE village SET villageName = ? where id = ?", village.getVillageName(), village.getId());
     }
 }

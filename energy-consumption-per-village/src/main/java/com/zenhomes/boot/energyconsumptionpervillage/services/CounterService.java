@@ -73,14 +73,14 @@ public class CounterService{
     public Map<String, List<EnergyConsumption>> getEnergyConsumptionReport(){
         List<EnergyConsumption> energyConsumptionsList = new ArrayList<>();
         Iterator<Map<String, Object>> iterator = counterDao.consumptionReport().iterator();
-
+        EnergyConsumption energyConsumption = null;
         while(iterator.hasNext()) {
             Map<String, Object> record = iterator.next();
             Set<Map.Entry<String, Object>> entrySet = record.entrySet();
             for(Map.Entry<String, Object> entry : entrySet){
-                EnergyConsumption energyConsumption = new EnergyConsumption();
-                energyConsumption.village_name = entry.getKey();
-                energyConsumption.consumption = Double.valueOf(entry.getValue().toString()).doubleValue();
+                energyConsumption = new EnergyConsumption();
+                energyConsumption.setVillage_name(entry.getKey());
+                energyConsumption.setConsumption(Double.valueOf(entry.getValue().toString()).doubleValue());
                 energyConsumptionsList.add(energyConsumption);
             }
         }

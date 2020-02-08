@@ -25,3 +25,4 @@ We will use ```minikube``` to run a local kubernetes instance. We will access th
 5. Logging.
 6. Cloud.
 7. Securing Containers.
+8. Add some more unit test cases and duration can be passed dynamically instead of 24h.

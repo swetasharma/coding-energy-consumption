@@ -30,17 +30,17 @@ public class CounterService{
 
 
     public void save(CounterRegister counterRegister) {
-        if(isAmountValid(counterRegister.amount)){
+        if(isAmountValid(counterRegister.getAmount())){
             //Here we are getting village name and id by hitting external url
-            Village village = this.getVillageDetails(counterRegister.counter_id);
+            Village village = this.getVillageDetails(counterRegister.getCounter_id());
             if(villageDao.isVillageExists(village.getId())){
                 villageDao.updateVillageName(new Village(village.getId(), village.getVillageName()));
             }else{
                 villageDao.save(new Village (village.getId(), village.getVillageName()));
             }
             Counter counter = new Counter();
-            counter.setCounterId(counterRegister.counter_id);
-            counter.setAmount(counterRegister.amount);
+            counter.setCounterId(counterRegister.getCounter_id());
+            counter.setAmount(counterRegister.getAmount());
             counter.setVillageId(village.getId());
             counter.setCreatedDate(LocalDateTime.now());
             counterDao.save(counter);

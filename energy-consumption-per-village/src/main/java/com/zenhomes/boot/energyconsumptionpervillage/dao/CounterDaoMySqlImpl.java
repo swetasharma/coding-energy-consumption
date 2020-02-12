@@ -23,7 +23,7 @@ public class CounterDaoMySqlImpl implements CounterDao{
                 jdbcTemplate.queryForList("select village.villageName, sum(counter.amount) amount" +
                         "FROM counter" +
                         "LEFT JOIN village ON counter.villageId = village.id" +
-                        "WHERE createdDate >= date_sub(now(),interval 24 hour)" +
+                        "WHERE createdDate >= date_sub(now(), interval 24 hour)" +
                         "GROUP BY village.id");
         return energyConsumption;
     }

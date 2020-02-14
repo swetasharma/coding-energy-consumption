@@ -7,7 +7,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CounterServiceControllerUnitTests {
+public class CounterControllerUnitTests {
 
     @Test
     public void testSuccessCreateCounterCallback(){
@@ -37,6 +37,23 @@ public class CounterServiceControllerUnitTests {
         expectedResult.put("villages", EnergyConsumptionList);
         assertEquals(expectedResult.get("villages"), actualResult.getOrDefault("villages", actualResult.get("villages")));
         assertEquals(expectedResult.size(), 0);
+    }
+
+    @Test
+    public void testOneRecordOfConsumptionReport(){
+        CounterController counterController = new CounterController();
+        Map<String, List<EnergyConsumption>> actualResult = counterController.consumption_report();
+
+        List<EnergyConsumption> EnergyConsumptionList = new ArrayList<>();
+        EnergyConsumption energyConsumption = new EnergyConsumption();
+        energyConsumption.setVillage_name("Bhayander");
+        energyConsumption.setConsumption(2000.00);
+        EnergyConsumptionList.add(energyConsumption);
+
+        Map<String, List<EnergyConsumption>> expectedResult = new HashMap<>();
+        expectedResult.put("villages", EnergyConsumptionList);
+        assertEquals(expectedResult.get("villages"), actualResult.getOrDefault("villages", actualResult.get("villages")));
+        assertEquals(expectedResult.size(), 1);
     }
 
 

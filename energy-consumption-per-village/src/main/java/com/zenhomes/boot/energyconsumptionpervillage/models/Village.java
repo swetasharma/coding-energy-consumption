@@ -1,7 +1,6 @@
 package com.zenhomes.boot.energyconsumptionpervillage.models;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotBlank;

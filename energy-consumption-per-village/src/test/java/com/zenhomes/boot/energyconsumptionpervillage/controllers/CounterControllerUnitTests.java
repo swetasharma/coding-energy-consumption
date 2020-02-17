@@ -44,7 +44,7 @@ public class CounterControllerUnitTests {
     }
 
     @Test
-    public void testOneRecordOfConsumptionReport() throws  Exception{
+    public void testSuccessOneRecordOfConsumptionReport() throws  Exception{
         CounterController counterController = new CounterController();
         Map<String, List<EnergyConsumption>> actualResult = counterController.consumption_report();
         //here you need to write code for post call
@@ -60,6 +60,12 @@ public class CounterControllerUnitTests {
         assertNotNull(actualResult);
         assertEquals(expectedResult.get("villages"), actualResult.getOrDefault("villages", actualResult.get("villages")));
         assertEquals(expectedResult.size(), actualResult.size());
+
+    }
+
+    @Test
+    public void postCounterCallbackWhenAmountIsNegativeShouldThrowException() throws Exception{
+
     }
 
 

@@ -6,28 +6,32 @@ import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
+
 @Service
 public class CounterService{
+
+    private static final Logger logger = LoggerFactory.getLogger(CounterService.class);
 
     private String uri = "https://europe-west2-zenhomes-development-project.cloudfunctions.net/counters/";
 
     @Autowired
     private CounterDao counterDao;
 
-
     @Autowired
     private VillageDao villageDao;
 
     @Autowired
     RestTemplate restTemplate;
-
 
     public void save(CounterRegister counterRegister) {
         if(isAmountValid(counterRegister.getAmount())){
@@ -44,6 +48,7 @@ public class CounterService{
             counter.setVillageId(village.getId());
             counter.setCreatedDate(LocalDateTime.now());
             counterDao.save(counter);
+            //Long counterId = counterDao.save(counter);
         }else {
             throw new IllegalArgumentException("Amount cannot be zero or negative or alphanumeric");
         }
@@ -67,7 +72,9 @@ public class CounterService{
      */
     private Village getVillageDetails(long counterId)
     {
-        return restTemplate.getForObject(uri.concat(String.valueOf(counterId)), Village.class);
+        Assert.notNull(counterId, "Counter Id cannot be empty");
+        logger.debug("Retrieving village data from :" + uri.concat(String.valueOf(counterId)));
+        return restTemplate.getForObject(uri, Village.class, String.valueOf(counterId));
     }
 
     public Map<String, List<EnergyConsumption>> getEnergyConsumptionReport(){

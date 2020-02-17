@@ -1,6 +1,8 @@
 package com.zenhomes.boot.energyconsumptionpervillage.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -18,6 +20,8 @@ public class Village {
     }
 
     public Village(long id, String villageName){
+        Assert.notNull(id, "Village Id cannot be empty");
+        Assert.notNull(villageName, "Village Name cannot be empty");
         this.id = id;
         this.villageName = villageName;
         this.createdDate = LocalDateTime.now();

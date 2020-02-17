@@ -21,12 +21,14 @@ spec:
             limits:
               memory: "200Mi"
             requests:
+              cpu: "100m"
               memory: "100Mi"
           readinessProbe: # know when a container is ready to start accepting traffic
             httpGet:
               path: /health
               port: 8080
             initialDealySeconds: 5
+            periodSeconds: 2
             timeoutSeconds: 1
           livenessProbe: # periodic check to make sure container is healthy
             httpGet:

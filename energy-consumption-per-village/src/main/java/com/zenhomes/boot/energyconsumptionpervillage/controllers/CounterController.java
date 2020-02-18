@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class CounterController {
     }
 
     @GetMapping(value = "/consumption_report?duration=24h", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, List<EnergyConsumption>> consumption_report(){
+    public Map<String, List<EnergyConsumption>> consumptionReport(){
         return counterService.getEnergyConsumptionReport();
     }
 }

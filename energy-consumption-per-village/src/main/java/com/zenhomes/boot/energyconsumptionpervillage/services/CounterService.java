@@ -61,10 +61,7 @@ public class CounterService{
      * @return
      */
     public boolean isAmountValid(Double amount){
-        if(amount <= 0){
-            return false;
-        }
-        return true;
+        return amount <= 0;
     }
 
     /**

@@ -26,14 +26,14 @@ public class CounterControllerUnitTests {
     @Test
     public void testSuccessConsumptionReport() throws Exception{
         CounterController counterController = new CounterController();
-        Map<String, List<EnergyConsumption>> actualResult = counterController.consumption_report();
+        Map<String, List<EnergyConsumption>> actualResult = counterController.consumptionReport();
         //compare actual result and expected result by using assert equals
     }
 
     @Test
     public void testEmptyConsumptionReport() throws Exception{
         CounterController counterController = new CounterController();
-        Map<String, List<EnergyConsumption>> actualResult = counterController.consumption_report();
+        Map<String, List<EnergyConsumption>> actualResult = counterController.consumptionReport();
         List<EnergyConsumption> EnergyConsumptionList = new ArrayList<>();
         Map<String, List<EnergyConsumption>> expectedResult = new HashMap<>();
         expectedResult.put("villages", EnergyConsumptionList);
@@ -46,7 +46,7 @@ public class CounterControllerUnitTests {
     @Test
     public void testSuccessOneRecordOfConsumptionReport() throws  Exception{
         CounterController counterController = new CounterController();
-        Map<String, List<EnergyConsumption>> actualResult = counterController.consumption_report();
+        Map<String, List<EnergyConsumption>> actualResult = counterController.consumptionReport();
         //here you need to write code for post call
         List<EnergyConsumption> EnergyConsumptionList = new ArrayList<>();
         EnergyConsumption energyConsumption = new EnergyConsumption();

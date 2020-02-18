@@ -48,10 +48,7 @@ public class VillageDaoMySqlImpl {
      * @return
      */
     public boolean isVillageExists(long Id){
-        if(this.findById(Id) != null) {
-            return true;
-        }
-        return false;
+         return this.findById(Id) == null;
     }
 
     /**

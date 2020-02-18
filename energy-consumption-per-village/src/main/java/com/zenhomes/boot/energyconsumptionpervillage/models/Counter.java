@@ -1,15 +1,13 @@
 package com.zenhomes.boot.energyconsumptionpervillage.models;
 
-import javax.validation.constraints.NotNull;
+import org.springframework.util.Assert;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Counter {
-    @NotNull
+
     private long counterId;
-    @NotNull
     private long villageId;
-    @NotNull
     private Double amount;
     private LocalDateTime createdDate;
 
@@ -17,8 +15,12 @@ public class Counter {
     }
 
     public Counter(long counter_id, long village_id, Double amount) {
+        Assert.notNull(counter_id, "CounterId cannot be empty");
+        Assert.notNull(village_id, "Village Id cannot be empty");
+        Assert.notNull(amount, "Amount cannot be empty");
+
         this.counterId = counter_id;
-        this.counterId = village_id;
+        this.villageId = village_id;
         this.amount = amount;
         this.createdDate = LocalDateTime.now();
     }

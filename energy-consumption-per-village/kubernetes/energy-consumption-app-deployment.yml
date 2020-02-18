@@ -15,22 +15,25 @@ spec:
       containers:
         - name: energy-consumption-app
           image: energy-consumption-app:v1
+          ports:
+          - containerPort: 8080
           resources:
             limits:
               memory: "200Mi"
             requests:
+              cpu: "100m"
               memory: "100Mi"
-          readinessProbe:
+          readinessProbe: # know when a container is ready to start accepting traffic
             httpGet:
               path: /health
-              port: 80
+              port: 8080
             initialDealySeconds: 5
+            periodSeconds: 2
             timeoutSeconds: 1
-          livenessProbe:
+          livenessProbe: # periodic check to make sure container is healthy
             httpGet:
               path: /health
-              port: 80
-            initialDelaySeconds: 5
+              port: 8080
+            initialDelaySeconds: 5 # length of time to wait for a pod to initialize
+            periodSeconds: 2 # How often (in seconds) to perform the probe
             timeoutSeconds: 1
-          ports:
-            - containerPort: 8080

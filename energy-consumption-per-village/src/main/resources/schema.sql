@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS village (
 
 CREATE TABLE IF NOT EXISTS counter (
     counterId INT NOT NULL identity primary key,
-    villageId INT NOT NULL references village(id),
+    counter INT NOT NULL references village(id),
     amount double,
     created_date date
 );

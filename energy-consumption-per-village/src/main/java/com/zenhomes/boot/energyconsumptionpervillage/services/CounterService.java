@@ -31,7 +31,7 @@ public class CounterService{
     private VillageDao villageDao;
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     public void save(CounterRegister counterRegister) {
         if(isAmountValid(counterRegister.getAmount())){

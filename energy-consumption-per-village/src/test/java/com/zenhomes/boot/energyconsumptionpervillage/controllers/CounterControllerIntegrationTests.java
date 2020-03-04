@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,6 +38,16 @@ public class CounterControllerIntegrationTests {
     public void contextLoads(){
         Assertions.assertNotNull(mockMvc);
         Assertions.assertNotNull(counterService);
+    }
+
+    @Test
+    public void verifyHTTPRequestPOSTCounterCallback() throws Exception {
+        this.mockMvc.perform( post("/counter_callback").contentType("application/json")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void verifyHTTPRequestGETEnergyConsumptionReport() throws Exception {
+        this.mockMvc.perform( get("/consumption_report?duration=24h").contentType("application/json")).andExpect(status().isOk());
     }
 
     @Test

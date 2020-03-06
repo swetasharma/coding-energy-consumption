@@ -12,25 +12,16 @@ public class VillageDaoMySqlImpl {
     private JdbcTemplate jdbcTemplate;
 
     public List<Village> findAll(){
-        List<Village> result = jdbcTemplate.query(
-                "SELECT id, villageName FROM village",
-                (rs, rowNum) ->
-                        new Village(
-                                rs.getLong("id"),
-                                rs.getString("villageName")
-                        )
-        );
-
-        return result;
+        return jdbcTemplate.query("SELECT id, villageName FROM village", new BeanPropertyRowMapper<Village>(Village.class));
     }
 
     /**
      * Create a new record in village table
      * @param village
      */
-    public void save(Village village) {
-        jdbcTemplate.update("INSERT INTO village(id, villageName) VALUES (?, ?)",
-                village.getId(), village.getVillageName());
+
+    public int save(Village village) {
+        return jdbcTemplate.update("INSERT INTO village(id, villageName) VALUES (?, ?)", new BeanPropertyRowMapper<Village>(Village.class));
     }
 
     /**
@@ -55,7 +46,7 @@ public class VillageDaoMySqlImpl {
      * If the record already exist we need to update the village name
      * @param village
      */
-    public void updateVillageName(Village village){
-        jdbcTemplate.update("UPDATE village SET villageName = ? where id = ?", village.getVillageName(), village.getId());
+    public int updateVillageName(Village village){
+        return jdbcTemplate.update("UPDATE village SET villageName = ? where id = ?", village.getVillageName(), village.getId());
     }
 }

@@ -2,7 +2,6 @@ package com.zenhomes.boot.energyconsumptionpervillage.controllers;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 import java.util.*;
 
@@ -97,7 +96,4 @@ public class CounterControllerUnitTests {
 
 
     }
-
-
-
 }

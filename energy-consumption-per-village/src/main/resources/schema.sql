@@ -1,15 +1,19 @@
-CREATE DATABASE IF NOT EXISTS energyConsumptionDB;
-
-CREATE TABLE IF NOT EXISTS village (
-    id INT NOT NULL AUTO_INCREMENT,
-    villageName varchar(30) NOT NULL ,
-    created_date date NOT NULL ,
+DROP TABLE IF EXISTS village;
+CREATE TABLE village
+(
+    id              INT         NOT NULL AUTO_INCREMENT,
+    villageName     VARCHAR(20) NOT NULL,
+    created_date    DATETIME    NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS counter (
-    counterId INT NOT NULL identity primary key,
-    counter INT NOT NULL references village(id),
-    amount double,
-    created_date date
+DROP TABLE IF EXISTS counter;
+CREATE TABLE counter
+(
+    id              INT         NOT NULL AUTO_INCREMENT,
+    counterId       INT         NOT NULL,
+    villageId       INT         NOT NULL,
+    amount          DOUBLE      NOT NULL,
+    created_date    DATETIME    NOT NULL,
+    PRIMARY KEY (id)
 );

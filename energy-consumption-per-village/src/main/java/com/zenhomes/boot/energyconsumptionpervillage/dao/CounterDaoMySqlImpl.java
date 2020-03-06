@@ -1,6 +1,7 @@
 package com.zenhomes.boot.energyconsumptionpervillage.dao;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ public class CounterDaoMySqlImpl implements CounterDao{
 
     public void save(Counter counter) {
         jdbcTemplate.update("INSERT INTO counter(counterId, villageId, amount, createdDate) VALUES (?,?,?,?)",
-                counter.getCounterId(), counter.getVillageId(), counter.getAmount(), LocalDateTime.now());
+                counter.getCounterId(), counter.getVillageId(), counter.getAmount(), LocalDateTime.now(), new BeanPropertyRowMapper<Counter>(Counter.class));
     }
 
     public List<Map<String,Object>> consumptionReport(){

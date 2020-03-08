@@ -3,7 +3,7 @@ CREATE TABLE village
 (
     id              INT         NOT NULL AUTO_INCREMENT,
     villageName     VARCHAR(20) NOT NULL,
-    created_date    DATETIME    NOT NULL,
+    createdDate     DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     PRIMARY KEY (id)
 );
 
@@ -14,6 +14,6 @@ CREATE TABLE counter
     counterId       INT         NOT NULL,
     villageId       INT         NOT NULL,
     amount          DOUBLE      NOT NULL,
-    created_date    DATETIME    NOT NULL,
+    createdDate     DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     PRIMARY KEY (id)
 );

@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
 public class Village {
     @Id
     private long id;
-    @NotBlank
+    @NotEmpty(message = "please provide village name")
     private String villageName;
     private LocalDateTime createdDate;
 

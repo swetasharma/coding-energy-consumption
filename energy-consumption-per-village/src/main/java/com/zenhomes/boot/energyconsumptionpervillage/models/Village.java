@@ -2,8 +2,6 @@ package com.zenhomes.boot.energyconsumptionpervillage.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.util.Assert;
-
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Objects;

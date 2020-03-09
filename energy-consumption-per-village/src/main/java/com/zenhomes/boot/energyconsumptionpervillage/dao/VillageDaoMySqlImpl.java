@@ -12,7 +12,7 @@ public class VillageDaoMySqlImpl implements VillageDao{
     private JdbcTemplate jdbcTemplate;
 
     public List<Village> findAll(){
-        return jdbcTemplate.query("SELECT id, villageName FROM village", new BeanPropertyRowMapper<Village>(Village.class));
+        return jdbcTemplate.query("SELECT id, name FROM village", new BeanPropertyRowMapper<Village>(Village.class));
     }
 
     /**
@@ -21,7 +21,7 @@ public class VillageDaoMySqlImpl implements VillageDao{
      */
 
     public int save(Village village) {
-        return jdbcTemplate.update("INSERT INTO village(id, villageName) VALUES (?, ?)", new BeanPropertyRowMapper<Village>(Village.class));
+        return jdbcTemplate.update("INSERT INTO village(id, name) VALUES (?, ?)", new BeanPropertyRowMapper<Village>(Village.class));
     }
 
     /**
@@ -30,7 +30,7 @@ public class VillageDaoMySqlImpl implements VillageDao{
      * @return
      */
     public Village findById(long id){
-        return jdbcTemplate.queryForObject("SELECT id, villageName FROM village WHERE ID = ?", new Object[] { id }, new BeanPropertyRowMapper<Village>(Village.class));
+        return jdbcTemplate.queryForObject("SELECT id, name FROM village WHERE ID = ?", new Object[] { id }, new BeanPropertyRowMapper<Village>(Village.class));
     }
 
     /**
@@ -47,6 +47,6 @@ public class VillageDaoMySqlImpl implements VillageDao{
      * @param village
      */
     public int updateVillageName(Village village){
-        return jdbcTemplate.update("UPDATE village SET villageName = ? where id = ?", village.getVillageName(), village.getId());
+        return jdbcTemplate.update("UPDATE village SET name = ? where id = ?", village.getVillageName(), village.getId());
     }
 }

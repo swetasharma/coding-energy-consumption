@@ -1,19 +1,23 @@
 package com.zenhomes.boot.energyconsumptionpervillage.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dao.VillageDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
+import com.zenhomes.boot.energyconsumptionpervillage.models.ParentVillage;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.util.Assert;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -23,7 +27,7 @@ public class CounterService{
 
     private static final Logger logger = LoggerFactory.getLogger(CounterService.class);
 
-    private String uri = "https://europe-west2-zenhomes-development-project.cloudfunctions.net/counters/";
+    private String url = "https://europe-west2-zenhomes-development-project.cloudfunctions.net/counters/";
 
     @Autowired
     private CounterDao counterDao;
@@ -39,11 +43,11 @@ public class CounterService{
         return new RestTemplate();
     }
 
-    public void save(CounterRegister counterRegister) {
+    public void save(CounterRegister counterRegister) throws IOException{
         if(isAmountValid(counterRegister.getAmount())){
             //Here we are getting village name and id by hitting external url
             Village village = this.getVillageDetails(counterRegister.getCounter_id());
-            if(villageDao.isVillageExists(village.getId())){
+            if(villageDao.isVillageExists(Long.parseLong(village.getId()))){
                 villageDao.updateVillageName(new Village(village.getId(), village.getVillageName()));
             }else{
                 villageDao.save(new Village (village.getId(), village.getVillageName()));
@@ -51,7 +55,7 @@ public class CounterService{
             Counter counter = new Counter();
             counter.setCounterId(counterRegister.getCounter_id());
             counter.setAmount(counterRegister.getAmount());
-            counter.setVillageId(village.getId());
+            counter.setVillageId(Long.parseLong(village.getId()));
             counter.setCreatedDate(LocalDateTime.now());
             counterDao.save(counter);
             //Long counterId = counterDao.save(counter);
@@ -73,14 +77,15 @@ public class CounterService{
     /**
      * Hits the external link and get the village name and village id
      */
-    private Village getVillageDetails(long counterId)
+    private Village getVillageDetails(long counterId) throws IOException
     {
-        Assert.notNull(counterId, "Counter Id cannot be empty");
-        logger.debug("Retrieving village data from :" + uri.concat(String.valueOf(counterId)));
         //Convert village endpoint from json to POJO
         //Parse using json
-        System.out.println(restTemplate.getForObject(uri, Village.class, String.valueOf(counterId)));
-        return restTemplate.getForObject(uri, Village.class, String.valueOf(counterId));
+        restTemplate.getMessageConverters().add( new MappingJackson2HttpMessageConverter() );
+        ParentVillage parentVillage  = restTemplate.getForObject(url.concat(String.valueOf(counterId)), ParentVillage.class);
+        //System.out.println(parentVillage.getVillage().toString() + "   ================ ***************");
+        return parentVillage.getVillage();
+
     }
 
     public Map<String, List<EnergyConsumption>> getEnergyConsumptionReport(){

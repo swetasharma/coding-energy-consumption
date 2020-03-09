@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class VillageDaoMySqlImpl {
+public class VillageDaoMySqlImpl implements VillageDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

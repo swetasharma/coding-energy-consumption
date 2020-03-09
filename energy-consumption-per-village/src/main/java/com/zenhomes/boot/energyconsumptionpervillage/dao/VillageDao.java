@@ -9,5 +9,5 @@ public interface VillageDao {
      int save(Village village);
      Village findById(long id);
      boolean isVillageExists(long Id);
-     void updateVillageName(Village village);
+     int updateVillageName(Village village);
 }

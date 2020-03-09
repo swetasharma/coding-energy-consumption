@@ -1,7 +1,7 @@
 package com.zenhomes.boot.energyconsumptionpervillage.services;
 
-import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterDaoMySqlImpl;
-import com.zenhomes.boot.energyconsumptionpervillage.dao.VillageDaoMySqlImpl;
+import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterDao;
+import com.zenhomes.boot.energyconsumptionpervillage.dao.VillageDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
@@ -26,10 +26,10 @@ public class CounterService{
     private String uri = "https://europe-west2-zenhomes-development-project.cloudfunctions.net/counters/";
 
     @Autowired
-    private CounterDaoMySqlImpl counterDaoMySqlImpl;
+    private CounterDao counterDao;
 
     @Autowired
-    private VillageDaoMySqlImpl villageDaoMySqlImpl;
+    private VillageDao villageDao;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -43,17 +43,17 @@ public class CounterService{
         if(isAmountValid(counterRegister.getAmount())){
             //Here we are getting village name and id by hitting external url
             Village village = this.getVillageDetails(counterRegister.getCounter_id());
-            if(villageDaoMySqlImpl.isVillageExists(village.getId())){
-                villageDaoMySqlImpl.updateVillageName(new Village(village.getId(), village.getVillageName()));
+            if(villageDao.isVillageExists(village.getId())){
+                villageDao.updateVillageName(new Village(village.getId(), village.getVillageName()));
             }else{
-                villageDaoMySqlImpl.save(new Village (village.getId(), village.getVillageName()));
+                villageDao.save(new Village (village.getId(), village.getVillageName()));
             }
             Counter counter = new Counter();
             counter.setCounterId(counterRegister.getCounter_id());
             counter.setAmount(counterRegister.getAmount());
             counter.setVillageId(village.getId());
             counter.setCreatedDate(LocalDateTime.now());
-            counterDaoMySqlImpl.save(counter);
+            counterDao.save(counter);
             //Long counterId = counterDao.save(counter);
         }else {
             throw new IllegalArgumentException("Amount cannot be zero or negative or alphanumeric");
@@ -82,7 +82,7 @@ public class CounterService{
 
     public Map<String, List<EnergyConsumption>> getEnergyConsumptionReport(){
         List<EnergyConsumption> energyConsumptionsList = new ArrayList<>();
-        Iterator<Map<String, Object>> iterator = counterDaoMySqlImpl.consumptionReport().iterator();
+        Iterator<Map<String, Object>> iterator = counterDao.consumptionReport().iterator();
         EnergyConsumption energyConsumption = null;
         while(iterator.hasNext()) {
             Map<String, Object> record = iterator.next();

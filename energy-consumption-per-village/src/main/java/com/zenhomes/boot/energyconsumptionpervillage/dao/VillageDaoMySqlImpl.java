@@ -39,7 +39,7 @@ public class VillageDaoMySqlImpl implements VillageDao{
      * @return
      */
     public boolean isVillageExists(long Id){
-         return this.findById(Id) == null;
+         return this.findById(Id) != null;
     }
 
     /**

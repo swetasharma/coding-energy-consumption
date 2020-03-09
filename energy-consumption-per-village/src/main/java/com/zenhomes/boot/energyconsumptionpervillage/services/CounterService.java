@@ -67,7 +67,7 @@ public class CounterService{
      * @return
      */
     public boolean isAmountValid(Double amount){
-        return amount <= 0;
+        return amount > 0;
     }
 
     /**
@@ -77,6 +77,9 @@ public class CounterService{
     {
         Assert.notNull(counterId, "Counter Id cannot be empty");
         logger.debug("Retrieving village data from :" + uri.concat(String.valueOf(counterId)));
+        //Convert village endpoint from json to POJO
+        //Parse using json
+        System.out.println(restTemplate.getForObject(uri, Village.class, String.valueOf(counterId)));
         return restTemplate.getForObject(uri, Village.class, String.valueOf(counterId));
     }
 

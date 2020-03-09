@@ -16,7 +16,7 @@ public class VillageController {
     VillageService villageService;
 
     @GetMapping(value = "/villages/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Village> getVillageById(@PathVariable Integer id){
+    public ResponseEntity<Village> getVillageById(@PathVariable long id){
         Village village =  villageService.findById(id);
         return new ResponseEntity<>(village, HttpStatus.FOUND);
     }

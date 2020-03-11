@@ -17,6 +17,8 @@ public class Counter {
     @NotEmpty(message = "Please provide amount")
     private Double amount;
 
+    private Double netAmount;
+
     private LocalDateTime createdDate;
 
     public Counter() {
@@ -30,6 +32,7 @@ public class Counter {
         this.counterId = counter_id;
         this.villageId = village_id;
         this.amount = amount;
+        this.netAmount = 0.0;
         this.createdDate = LocalDateTime.now();
     }
 
@@ -63,6 +66,14 @@ public class Counter {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Double getNetAmount() {
+        return netAmount;
+    }
+
+    public void setNetAmount(Double netAmount) {
+        this.netAmount = netAmount;
     }
 
     @Override

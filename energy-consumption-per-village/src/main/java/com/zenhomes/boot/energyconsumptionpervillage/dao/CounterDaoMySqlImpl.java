@@ -14,8 +14,8 @@ public class CounterDaoMySqlImpl implements CounterDao{
     private JdbcTemplate jdbcTemplate;
 
     public void save(Counter counter) {
-        jdbcTemplate.update("INSERT INTO counter(counterId, villageId, amount, createdDate) VALUES (?,?,?,?)",
-                counter.getCounterId(), counter.getVillageId(), counter.getAmount(), LocalDateTime.now());
+        jdbcTemplate.update("INSERT INTO counter(counterId, villageId, amount, netAmount, createdDate) VALUES (?,?,?,?,?)",
+                counter.getCounterId(), counter.getVillageId(), counter.getAmount(), counter.getAmount() - 0.0, LocalDateTime.now());
     }
 
     public List<Map<String,Object>> consumptionReport(){

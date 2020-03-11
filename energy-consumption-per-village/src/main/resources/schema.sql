@@ -14,6 +14,7 @@ CREATE TABLE counter
     counterId       INT         NOT NULL,
     villageId       INT         NOT NULL,
     amount          DOUBLE      NOT NULL,
+    netAmount       DOUBLE      NOT NULL DEFAULT 0.0,
     createdDate     DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     PRIMARY KEY (id)
 );

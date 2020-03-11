@@ -34,11 +34,11 @@ public class Village {
         this.id = id;
     }
 
-    public String getVillageName() {
+    public String getName() {
         return name;
     }
 
-    public void setVillageName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

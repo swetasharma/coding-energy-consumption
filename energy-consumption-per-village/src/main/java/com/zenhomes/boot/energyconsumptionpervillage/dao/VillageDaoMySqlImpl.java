@@ -46,7 +46,7 @@ public class VillageDaoMySqlImpl implements VillageDao{
      * If the record already exist we need to update the village name
      * @param village
      */
-    public int updateVillageName(Village village){
-        return jdbcTemplate.update("UPDATE village SET name = ? where id = ?", village.getVillageName(), village.getId());
+    public int updateName(Village village){
+        return jdbcTemplate.update("UPDATE village SET name = ? where id = ?", village.getName(), village.getId());
     }
 }

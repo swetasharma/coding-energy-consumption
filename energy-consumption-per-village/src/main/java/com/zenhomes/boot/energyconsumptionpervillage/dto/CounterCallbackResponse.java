@@ -1,16 +1,17 @@
-package com.zenhomes.boot.energyconsumptionpervillage.models;
+package com.zenhomes.boot.energyconsumptionpervillage.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public class ParentVillage {
+public class CounterCallbackResponse {
     private int id;
     private Village village;
 
-    public ParentVillage() {
+    public CounterCallbackResponse() {
     }
 
-    public ParentVillage(int id, Village village) {
+    public CounterCallbackResponse(int id, Village village) {
         this.id = id;
         this.village = village;
     }

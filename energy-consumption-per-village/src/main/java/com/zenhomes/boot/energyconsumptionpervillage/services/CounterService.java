@@ -1,12 +1,11 @@
 package com.zenhomes.boot.energyconsumptionpervillage.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dao.VillageDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
-import com.zenhomes.boot.energyconsumptionpervillage.models.ParentVillage;
+import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterCallbackResponse;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -48,9 +46,9 @@ public class CounterService{
             //Here we are getting village name and id by hitting external url
             Village village = this.getVillageDetails(counterRegister.getCounter_id());
             if(villageDao.isVillageExists(Long.parseLong(village.getId()))){
-                villageDao.updateVillageName(new Village(village.getId(), village.getVillageName()));
+                villageDao.updateName(new Village(village.getId(), village.getName()));
             }else{
-                villageDao.save(new Village (village.getId(), village.getVillageName()));
+                villageDao.save(new Village (village.getId(), village.getName()));
             }
             Counter counter = new Counter();
             counter.setCounterId(counterRegister.getCounter_id());
@@ -82,9 +80,9 @@ public class CounterService{
         //Convert village endpoint from json to POJO
         //Parse using json
         restTemplate.getMessageConverters().add( new MappingJackson2HttpMessageConverter() );
-        ParentVillage parentVillage  = restTemplate.getForObject(url.concat(String.valueOf(counterId)), ParentVillage.class);
-        //System.out.println(parentVillage.getVillage().toString() + "   ================ ***************");
-        return parentVillage.getVillage();
+        CounterCallbackResponse counterCallbackResponse = restTemplate.getForObject(url.concat(String.valueOf(counterId)), CounterCallbackResponse.class);
+        System.out.println(counterCallbackResponse.getVillage().toString() + "   ================ ***************");
+        return counterCallbackResponse.getVillage();
 
     }
 

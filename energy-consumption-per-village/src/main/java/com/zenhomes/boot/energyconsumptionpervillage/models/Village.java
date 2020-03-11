@@ -1,7 +1,6 @@
 package com.zenhomes.boot.energyconsumptionpervillage.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.util.Assert;
 import javax.validation.constraints.NotEmpty;

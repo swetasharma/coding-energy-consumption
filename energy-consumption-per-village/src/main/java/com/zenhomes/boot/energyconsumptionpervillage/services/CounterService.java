@@ -108,4 +108,9 @@ public class CounterService{
 
         return energyConsumptionReport;
     }
+
+    public double calculateDifference(CounterRegister counterRegister){
+
+        return 0.0;
+    }
 }

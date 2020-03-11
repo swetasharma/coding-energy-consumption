@@ -1,6 +1,7 @@
 package com.zenhomes.boot.energyconsumptionpervillage.dao;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -30,7 +31,12 @@ public class VillageDaoMySqlImpl implements VillageDao{
      * @return
      */
     public Village findById(long id){
-        return jdbcTemplate.queryForObject("SELECT id, name FROM village WHERE ID = ?", new Object[] { id }, new BeanPropertyRowMapper<Village>(Village.class));
+        //Spring throws an EmptyResultDataAccessException, instead of returning a null when record not found
+        try{
+            return jdbcTemplate.queryForObject("SELECT id, name FROM village WHERE ID = ?", new Object[] { id }, new BeanPropertyRowMapper<Village>(Village.class));
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     /**

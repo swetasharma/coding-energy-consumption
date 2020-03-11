@@ -22,7 +22,7 @@ public class VillageDaoMySqlImpl implements VillageDao{
      */
 
     public int save(Village village) {
-        return jdbcTemplate.update("INSERT INTO village(id, name) VALUES (?, ?)", new BeanPropertyRowMapper<Village>(Village.class));
+        return jdbcTemplate.update("INSERT INTO village(id, name) VALUES (?, ?)", village.getId(), village.getName());
     }
 
     /**

@@ -56,7 +56,6 @@ public class CounterService{
             counter.setVillageId(Long.parseLong(village.getId()));
             counter.setCreatedDate(LocalDateTime.now());
             counterDao.save(counter);
-            //Long counterId = counterDao.save(counter);
         }else {
             throw new IllegalArgumentException("Amount cannot be zero or negative or alphanumeric");
         }
@@ -78,10 +77,8 @@ public class CounterService{
     private Village getVillageDetails(long counterId) throws IOException
     {
         //Convert village endpoint from json to POJO
-        //Parse using json
         restTemplate.getMessageConverters().add( new MappingJackson2HttpMessageConverter() );
         CounterCallbackResponse counterCallbackResponse = restTemplate.getForObject(url.concat(String.valueOf(counterId)), CounterCallbackResponse.class);
-        System.out.println(counterCallbackResponse.getVillage().toString() + "   ================ ***************");
         return counterCallbackResponse.getVillage();
 
     }

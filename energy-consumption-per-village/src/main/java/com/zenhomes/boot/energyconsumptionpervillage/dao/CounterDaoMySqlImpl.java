@@ -20,7 +20,7 @@ public class CounterDaoMySqlImpl implements CounterDao{
 
     public List<Map<String,Object>> consumptionReport(){
         List<Map<String,Object>> energyConsumption =
-                jdbcTemplate.queryForList("select village.villageName, sum(counter.amount) amount" +
+                jdbcTemplate.queryForList("SELECT village.villageName, sum(counter.amount) amount" +
                         "FROM counter" +
                         "LEFT JOIN village ON counter.villageId = village.id" +
                         "WHERE createdDate >= date_sub(now(), interval 24 hour)" +

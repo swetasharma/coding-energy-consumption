@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CounterControllerUnitTests {
 
@@ -21,6 +19,21 @@ public class CounterControllerUnitTests {
         counterRegister.setCounter_id(1);
         counterRegister.setAmount(1000);
         counterController.createCounterCallback(counterRegister);
+
+        Map<String, List<EnergyConsumption>> actualResult = counterController.consumptionReport();
+
+        List<EnergyConsumption> EnergyConsumptionList = new ArrayList<>();
+        Map<String, List<EnergyConsumption>> expectedResult = new HashMap<>();
+        expectedResult.put("villages", EnergyConsumptionList);
+
+        assertEquals(1, actualResult.entrySet().size());
+        assertEquals(true, actualResult.entrySet().iterator().hasNext());
+        assertNull(actualResult.get("villages"));
+        assertEquals(expectedResult.get("villages"), actualResult.getOrDefault("villages", actualResult.get("villages")));
+        assertEquals(1, actualResult.size());
+        assertEquals(true, actualResult.get("villages").contains("counter_id"));
+        assertEquals(true, actualResult.get("villages").contains("amount"));
+
     }
 
     @Test
@@ -68,6 +81,19 @@ public class CounterControllerUnitTests {
 
     }
 
+    //understand how you can use this
+    @Test
+    void contains_basic(){
+        String str = "abcdefgh";
+        boolean result = str.contains("ijk");
+        assertFalse(result);
+    }
+
+    @Test
+    void toUpperCaseBasic(){
+        String str = "abcd";
+        String result = str.toUpperCase();
 
 
+    }
 }

@@ -1,52 +1,52 @@
 package com.zenhomes.boot.energyconsumptionpervillage.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.util.Assert;
-
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class Village {
     @Id
-    private long id;
-    @NotBlank
-    private String villageName;
+    private String id;
+    @NotEmpty(message = "please provide village name")
+    private String name;
     private LocalDateTime createdDate;
 
     public Village(){
     }
 
-    public Village(long id, String villageName){
+    public Village(String id, String name){
         Assert.notNull(id, "Village Id cannot be empty");
-        Assert.notNull(villageName, "Village Name cannot be empty");
+        Assert.notNull(name, "Village Name cannot be empty");
         this.id = id;
-        this.villageName = villageName;
+        this.name = name;
         this.createdDate = LocalDateTime.now();
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getVillageName() {
-        return villageName;
+    public String getName() {
+        return name;
     }
 
-    public void setVillageName(String villageName) {
-        this.villageName = villageName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "Village{" +
                 "id=" + id +
-                ", villageName='" + villageName + '\'' +
+                ", name='" + name + '\'' +
                 ", createdDate=" + createdDate +
                 '}';
     }
@@ -57,13 +57,13 @@ public class Village {
         if (!(o instanceof Village)) return false;
         Village village = (Village) o;
         return Objects.equals(getId(), village.getId()) &&
-                Objects.equals(getVillageName(), village.getVillageName()) &&
+                Objects.equals(name, village.name) &&
                 Objects.equals(createdDate, village.createdDate);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getVillageName(), createdDate);
+        return Objects.hash(getId(), name, createdDate);
     }
 }

@@ -29,7 +29,7 @@ public class CounterController {
      */
     @PostMapping("/counter_callback")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createCounterCallback(@Valid @RequestBody CounterRegister counterRegister) {
+    public void createCounterCallback(@Valid @RequestBody CounterRegister counterRegister) throws Exception{
         counterService.save(counterRegister);
     }
 

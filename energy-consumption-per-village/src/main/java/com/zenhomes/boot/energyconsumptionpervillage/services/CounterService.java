@@ -5,14 +5,17 @@ import com.zenhomes.boot.energyconsumptionpervillage.dao.VillageDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
+import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterCallbackResponse;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.util.Assert;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -22,7 +25,7 @@ public class CounterService{
 
     private static final Logger logger = LoggerFactory.getLogger(CounterService.class);
 
-    private String uri = "https://europe-west2-zenhomes-development-project.cloudfunctions.net/counters/";
+    private String url = "https://europe-west2-zenhomes-development-project.cloudfunctions.net/counters/";
 
     @Autowired
     private CounterDao counterDao;
@@ -31,24 +34,28 @@ public class CounterService{
     private VillageDao villageDao;
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
-    public void save(CounterRegister counterRegister) {
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    public void save(CounterRegister counterRegister) throws IOException{
         if(isAmountValid(counterRegister.getAmount())){
             //Here we are getting village name and id by hitting external url
             Village village = this.getVillageDetails(counterRegister.getCounter_id());
-            if(villageDao.isVillageExists(village.getId())){
-                villageDao.updateVillageName(new Village(village.getId(), village.getVillageName()));
+            if(villageDao.isVillageExists(Long.parseLong(village.getId()))){
+                villageDao.updateName(new Village(village.getId(), village.getName()));
             }else{
-                villageDao.save(new Village (village.getId(), village.getVillageName()));
+                villageDao.save(new Village (village.getId(), village.getName()));
             }
             Counter counter = new Counter();
             counter.setCounterId(counterRegister.getCounter_id());
             counter.setAmount(counterRegister.getAmount());
-            counter.setVillageId(village.getId());
+            counter.setVillageId(Long.parseLong(village.getId()));
             counter.setCreatedDate(LocalDateTime.now());
             counterDao.save(counter);
-            //Long counterId = counterDao.save(counter);
         }else {
             throw new IllegalArgumentException("Amount cannot be zero or negative or alphanumeric");
         }
@@ -61,17 +68,19 @@ public class CounterService{
      * @return
      */
     public boolean isAmountValid(Double amount){
-        return amount <= 0;
+        return amount > 0;
     }
 
     /**
      * Hits the external link and get the village name and village id
      */
-    private Village getVillageDetails(long counterId)
+    private Village getVillageDetails(long counterId) throws IOException
     {
-        Assert.notNull(counterId, "Counter Id cannot be empty");
-        logger.debug("Retrieving village data from :" + uri.concat(String.valueOf(counterId)));
-        return restTemplate.getForObject(uri, Village.class, String.valueOf(counterId));
+        //Convert village endpoint from json to POJO
+        restTemplate.getMessageConverters().add( new MappingJackson2HttpMessageConverter() );
+        CounterCallbackResponse counterCallbackResponse = restTemplate.getForObject(url.concat(String.valueOf(counterId)), CounterCallbackResponse.class);
+        return counterCallbackResponse.getVillage();
+
     }
 
     public Map<String, List<EnergyConsumption>> getEnergyConsumptionReport(){

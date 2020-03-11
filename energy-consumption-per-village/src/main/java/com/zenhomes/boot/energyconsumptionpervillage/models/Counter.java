@@ -1,14 +1,22 @@
 package com.zenhomes.boot.energyconsumptionpervillage.models;
 
 import org.springframework.util.Assert;
+
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Counter {
 
+    @NotEmpty(message = "Please provide counter id")
     private long counterId;
+
+    @NotEmpty(message = "Please provide village id")
     private long villageId;
+
+    @NotEmpty(message = "Please provide amount")
     private Double amount;
+
     private LocalDateTime createdDate;
 
     public Counter() {

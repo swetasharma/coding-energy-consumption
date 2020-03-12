@@ -1,9 +1,7 @@
 package com.zenhomes.boot.energyconsumptionpervillage.dao;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
-import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +18,7 @@ public class CounterDaoMySqlImpl implements CounterDao{
         //
         //first entry for that village
         jdbcTemplate.update("INSERT INTO counter(counterId, villageId, amount, netAmount, createdDate) VALUES (?,?,?,?,?)",
-                counter.getCounterId(), counter.getVillageId(), counter.getAmount(), counter.getAmount() - 0.0, LocalDateTime.now());
+                counter.getCounterId(), counter.getVillageId(), counter.getAmount(), counter.getAmount() - counter.getNetAmount(), LocalDateTime.now());
     }
 
     public List<Map<String,Object>> consumptionReport(){
@@ -38,7 +36,7 @@ public class CounterDaoMySqlImpl implements CounterDao{
      * @param counter
      * @return
      */
-    public double getLastRecord(Counter counter){
+    public double getLastRecordToCalculateNetAmount(Counter counter){
         try{
             String query = "SELECT amount from counter where counterId = ? AND villageId = ? ORDER BY createdDate DESC LIMIT 0, 1;";
             Object[] inputs = new Object[] {counter.getCounterId(), counter.getVillageId()};

@@ -1,6 +1,7 @@
 package com.zenhomes.boot.energyconsumptionpervillage.services;
 
 import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterDao;
+import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterDaoMySqlImpl;
 import com.zenhomes.boot.energyconsumptionpervillage.dao.VillageDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
@@ -60,6 +61,13 @@ public class CounterService{
             counter.setAmount(counterRegister.getAmount());
             counter.setVillageId(Long.parseLong(village.getId()));
             counter.setCreatedDate(LocalDateTime.now());
+            double lastRecordAmount = this.getLastRecordToCalculateNetAmount(counter);
+            if(lastRecordAmount == 0.0){
+                counter.setNetAmount(counterRegister.amount);
+            }else{
+                counter.setNetAmount(counterRegister.amount - lastRecordAmount);
+            }
+
             counterDao.save(counter);
         }else {
             throw new IllegalArgumentException("Amount cannot be zero or negative or alphanumeric");
@@ -109,8 +117,12 @@ public class CounterService{
         return energyConsumptionReport;
     }
 
-    public double calculateDifference(CounterRegister counterRegister){
-
-        return 0.0;
+    /**
+     * Here return values 0.0 represents that it is a first record else ot gets last record to calculate the net amount
+     * @param counter
+     * @return
+     */
+    public double getLastRecordToCalculateNetAmount(Counter counter){
+        return counterDao.getLastRecordToCalculateNetAmount(counter);
     }
 }

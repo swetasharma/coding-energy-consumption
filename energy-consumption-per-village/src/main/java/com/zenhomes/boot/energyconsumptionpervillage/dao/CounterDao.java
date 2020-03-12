@@ -6,4 +6,5 @@ import java.util.Map;
 public interface CounterDao {
     void save(Counter counter);
     List<Map<String,Object>> consumptionReport();
+    double getLastRecordToCalculateNetAmount(Counter counter);
 }

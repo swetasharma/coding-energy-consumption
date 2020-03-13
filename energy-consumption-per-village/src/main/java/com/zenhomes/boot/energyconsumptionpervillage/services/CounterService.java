@@ -67,7 +67,6 @@ public class CounterService{
             }else{
                 counter.setNetAmount(counterRegister.amount - lastRecordAmount);
             }
-
             counterDao.save(counter);
         }else {
             throw new IllegalArgumentException("Amount cannot be zero or negative or alphanumeric");

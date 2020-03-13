@@ -15,16 +15,16 @@ public class Counter {
     private long villageId;
 
     @NotEmpty(message = "Please provide amount")
-    private Double amount;
+    private double amount;
 
-    private Double netAmount;
+    private double netAmount;
 
     private LocalDateTime createdDate;
 
     public Counter() {
     }
 
-    public Counter(long counter_id, long village_id, Double amount) {
+    public Counter(long counter_id, long village_id, double amount) {
         Assert.notNull(counter_id, "CounterId cannot be empty");
         Assert.notNull(village_id, "Village Id cannot be empty");
         Assert.notNull(amount, "Amount cannot be empty");
@@ -52,11 +52,11 @@ public class Counter {
         this.villageId = villageId;
     }
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -68,11 +68,11 @@ public class Counter {
         this.createdDate = createdDate;
     }
 
-    public Double getNetAmount() {
+    public double getNetAmount() {
         return netAmount;
     }
 
-    public void setNetAmount(Double netAmount) {
+    public void setNetAmount(double netAmount) {
         this.netAmount = netAmount;
     }
 

@@ -15,7 +15,6 @@ public class CounterDaoMySqlImpl implements CounterDao{
     private JdbcTemplate jdbcTemplate;
 
     public void save(Counter counter) {
-        //
         //first entry for that village
         jdbcTemplate.update("INSERT INTO counter(counterId, villageId, amount, netAmount, createdDate) VALUES (?,?,?,?,?)",
                 counter.getCounterId(), counter.getVillageId(), counter.getAmount(), counter.getAmount() - counter.getNetAmount(), LocalDateTime.now());
@@ -40,7 +39,7 @@ public class CounterDaoMySqlImpl implements CounterDao{
         try{
             String query = "SELECT amount from counter where counterId = ? AND villageId = ? ORDER BY createdDate DESC LIMIT 0, 1;";
             Object[] inputs = new Object[] {counter.getCounterId(), counter.getVillageId()};
-            return jdbcTemplate.queryForObject(query, inputs, Counter.class).getAmount();
+            return jdbcTemplate.queryForObject(query, inputs, Double.class).doubleValue();
         }catch (EmptyResultDataAccessException e){
             return 0.0;
         }

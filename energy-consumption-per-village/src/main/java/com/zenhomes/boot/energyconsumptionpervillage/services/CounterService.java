@@ -80,7 +80,7 @@ public class CounterService{
      * @param amount
      * @return
      */
-    public boolean isAmountValid(Double amount){
+    public boolean isAmountValid(double amount){
         return amount > 0;
     }
 

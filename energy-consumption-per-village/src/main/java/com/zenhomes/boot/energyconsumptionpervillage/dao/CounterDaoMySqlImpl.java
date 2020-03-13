@@ -17,12 +17,12 @@ public class CounterDaoMySqlImpl implements CounterDao{
     public void save(Counter counter) {
         //first entry for that village
         jdbcTemplate.update("INSERT INTO counter(counterId, villageId, amount, netAmount, createdDate) VALUES (?,?,?,?,?)",
-                counter.getCounterId(), counter.getVillageId(), counter.getAmount(), counter.getAmount() - counter.getNetAmount(), LocalDateTime.now());
+                counter.getCounterId(), counter.getVillageId(), counter.getAmount(), counter.getNetAmount(), LocalDateTime.now());
     }
 
     public List<Map<String,Object>> consumptionReport(){
         List<Map<String,Object>> energyConsumption =
-                jdbcTemplate.queryForList("SELECT village.villageName, sum(counter.amount) amount" +
+                jdbcTemplate.queryForList("SELECT village.villageName, sum(counter.netAmount) amount" +
                         "FROM counter" +
                         "LEFT JOIN village ON counter.villageId = village.id" +
                         "WHERE createdDate >= date_sub(now(), interval 24 hour)" +
@@ -39,7 +39,7 @@ public class CounterDaoMySqlImpl implements CounterDao{
         try{
             String query = "SELECT amount from counter where counterId = ? AND villageId = ? ORDER BY createdDate DESC LIMIT 0, 1;";
             Object[] inputs = new Object[] {counter.getCounterId(), counter.getVillageId()};
-            return jdbcTemplate.queryForObject(query, inputs, Double.class).doubleValue();
+            return jdbcTemplate.queryForObject(query, inputs, Double.class);
         }catch (EmptyResultDataAccessException e){
             return 0.0;
         }

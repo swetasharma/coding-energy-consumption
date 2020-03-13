@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class CounterController {
     /**
-     * get bean for counter service
+     * get bean for counter servicsele
      */
     @Autowired
     CounterService counterService;

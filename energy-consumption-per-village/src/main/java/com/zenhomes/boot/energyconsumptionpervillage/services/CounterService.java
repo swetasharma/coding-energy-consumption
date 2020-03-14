@@ -104,7 +104,7 @@ public class CounterService{
             Set<Map.Entry<String, Object>> entrySet = record.entrySet();
             for(Map.Entry<String, Object> entry : entrySet){
                 energyConsumption = new EnergyConsumption();
-                energyConsumption.setVillage_name(entry.getKey());
+                energyConsumption.setVillage_name(entry.getValue().toString());
                 energyConsumption.setConsumption(Double.valueOf(entry.getValue().toString()).doubleValue());
                 energyConsumptionsList.add(energyConsumption);
             }

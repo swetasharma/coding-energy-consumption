@@ -18,3 +18,14 @@ CREATE TABLE counter
     createdDate     DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     PRIMARY KEY (id)
 );
+
+DROP TABLE IF EXISTS transaction;
+CREATE TABLE transaction
+(
+    id              INT         NOT NULL AUTO_INCREMENT,
+    counterId       INT         NOT NULL,
+    amount          DOUBLE      NOT NULL,
+    processed       INT         NOT NULL DEFAULT 0,
+    createdDate     DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    PRIMARY KEY (id)
+);

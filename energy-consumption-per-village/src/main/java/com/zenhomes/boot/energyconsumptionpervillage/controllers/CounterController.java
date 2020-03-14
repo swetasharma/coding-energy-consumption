@@ -32,7 +32,7 @@ public class CounterController {
         counterService.save(counterRegister);
     }
 
-    @GetMapping(value = "/consumption_report?duration=24h", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/consumption_report", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<EnergyConsumption>> consumptionReport(){
         return counterService.getEnergyConsumptionReport();
     }

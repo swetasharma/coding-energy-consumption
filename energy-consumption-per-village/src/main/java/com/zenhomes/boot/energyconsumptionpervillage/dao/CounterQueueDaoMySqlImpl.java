@@ -14,7 +14,7 @@ public class CounterQueueDaoMySqlImpl implements CounterQueueDao{
     private JdbcTemplate jdbcTemplate;
 
     public void save(CounterQueue counterQueue) {
-        jdbcTemplate.update("INSERT INTO counterqueue(counterId, amount, createdDate) VALUES (?,?,?,?,?)",
+        jdbcTemplate.update("INSERT INTO counterqueue(counterId, amount, createdDate) VALUES (?,?,?)",
                 counterQueue.getCounterId(), counterQueue.getAmount(), LocalDateTime.now());
     }
 }

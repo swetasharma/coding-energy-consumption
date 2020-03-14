@@ -1,11 +1,13 @@
 package com.zenhomes.boot.energyconsumptionpervillage.services;
 
 import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterDao;
+import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterQueueDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dao.VillageDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterCallbackResponse;
+import com.zenhomes.boot.energyconsumptionpervillage.models.CounterQueue;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,9 @@ public class CounterService{
 
     @Autowired
     private VillageDao villageDao;
+
+    @Autowired
+    private CounterQueueDao counterQueueDao;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -107,5 +112,15 @@ public class CounterService{
      */
     public double getLastRecordToCalculateNetAmount(Counter counter){
         return counterDao.getLastRecordToCalculateNetAmount(counter);
+    }
+
+    /**
+     * saving all the counter data to queue
+     */
+    public void saveCounterQueueRecord(CounterRegister counterRegister){
+        CounterQueue counterQueue = new CounterQueue();
+        counterQueue.setCounterId(counterRegister.getCounter_id());
+        counterQueue.setAmount(counterRegister.getAmount());
+        counterQueueDao.save(counterQueue);
     }
 }

@@ -19,8 +19,8 @@ CREATE TABLE counter
     PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS counnterqueue;
-CREATE TABLE counnterqueue
+DROP TABLE IF EXISTS counterqueue;
+CREATE TABLE counterqueue
 (
     id              INT         NOT NULL AUTO_INCREMENT,
     counterId       INT         NOT NULL,

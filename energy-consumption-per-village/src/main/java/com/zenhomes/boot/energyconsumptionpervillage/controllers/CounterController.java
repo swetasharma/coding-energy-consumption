@@ -35,7 +35,8 @@ public class CounterController {
         if (errors.hasErrors()) {
             return new ResponseEntity<>(createErrorString(errors), HttpStatus.BAD_REQUEST);
         }else{
-            counterService.save(counterRegister);
+            //counterService.save(counterRegister);
+            counterService.saveCounterQueueRecord(counterRegister);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

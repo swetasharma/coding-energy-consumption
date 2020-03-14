@@ -16,6 +16,10 @@ public class CounterQueue {
 
     private LocalDateTime createdDate;
 
+    public CounterQueue(){
+        
+    }
+
     public CounterQueue(long counterId, double amount, byte processed) {
         this.counterId = counterId;
         this.amount = amount;

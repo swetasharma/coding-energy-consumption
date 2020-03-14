@@ -13,12 +13,11 @@ public class CounterControllerUnitTests {
     public void testSuccessCreateCounterCallback() throws Exception{
         //here you need to implement actual result and expected result
         // you need to return some json value which will help you to compare actual result and expected result and use assertEquals to compare expected and actual result
-
         CounterController counterController = new CounterController();
         CounterRegister counterRegister = new CounterRegister();
         counterRegister.setCounter_id(1);
         counterRegister.setAmount(1000);
-        counterController.createCounterCallback(counterRegister);
+        //counterController.createCounterCallback(counterRegister);
 
         Map<String, List<EnergyConsumption>> actualResult = counterController.consumptionReport();
 

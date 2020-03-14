@@ -1,8 +1,12 @@
 package com.zenhomes.boot.energyconsumptionpervillage.dto;
 
+import javax.validation.constraints.Positive;
+
 public class CounterRegister {
+    @Positive( message = "You cannot have zero or negative counterId" )
     public long counter_id;
 
+    @Positive( message = "You cannot have zero or negative amount" )
     public double amount;
 
     public long getCounter_id() {

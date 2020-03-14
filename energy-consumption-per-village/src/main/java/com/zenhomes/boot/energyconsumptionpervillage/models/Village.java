@@ -2,15 +2,20 @@ package com.zenhomes.boot.energyconsumptionpervillage.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
-import javax.validation.constraints.NotEmpty;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class Village {
     @Id
+    @Positive( message = "You cannot have zero or negative village Id" )
     private String id;
-    @NotEmpty(message = "please provide village name")
+    @NotBlank( message = "Village name cannot be null or empty" )
+    @Size(min = 2, max = 30, message = "Village name must be 2-30 characters long")
     private String name;
     private LocalDateTime createdDate;
 

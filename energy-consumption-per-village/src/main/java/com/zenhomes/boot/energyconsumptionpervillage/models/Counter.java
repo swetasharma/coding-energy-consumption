@@ -1,18 +1,18 @@
 package com.zenhomes.boot.energyconsumptionpervillage.models;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Counter {
 
-    @NotEmpty(message = "Please provide counter id")
+    @Positive( message = "You cannot have zero or negative counterId" )
     private long counterId;
 
-    @NotEmpty(message = "Please provide village id")
+    @Positive( message = "You cannot have zero or negative village Id" )
     private long villageId;
 
-    @NotEmpty(message = "Please provide amount")
+    @Positive( message = "You cannot have zero or negative amount" )
     private double amount;
 
     private double netAmount;

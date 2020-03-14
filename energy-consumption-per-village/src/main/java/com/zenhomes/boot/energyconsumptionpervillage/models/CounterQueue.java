@@ -19,8 +19,40 @@ public class CounterQueue {
     public CounterQueue(long counterId, double amount, byte processed) {
         this.counterId = counterId;
         this.amount = amount;
-        this.processed = processed;
+        this.processed = 0;
         this.createdDate = LocalDateTime.now();
+    }
+
+    public long getCounterId() {
+        return counterId;
+    }
+
+    public void setCounterId(long counterId) {
+        this.counterId = counterId;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public byte getProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(byte processed) {
+        this.processed = processed;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     @Override

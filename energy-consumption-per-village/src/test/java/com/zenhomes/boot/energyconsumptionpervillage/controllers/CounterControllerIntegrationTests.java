@@ -47,7 +47,7 @@ public class CounterControllerIntegrationTests {
 
     @Test
     public void verifyHTTPRequestGETEnergyConsumptionReport() throws Exception {
-        this.mockMvc.perform( get("/consumption_report?duration=24h").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+        this.mockMvc.perform( get("/consumption_report?duration=24h").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test

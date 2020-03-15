@@ -17,7 +17,7 @@ public class CounterControllerUnitTests {
         CounterRegister counterRegister = new CounterRegister();
         counterRegister.setCounter_id(1);
         counterRegister.setAmount(1000);
-        //counterController.createCounterCallback(counterRegister);
+        counterController.createCounterCallback(counterRegister);
 
         Map<String, List<EnergyConsumption>> actualResult = counterController.consumptionReport();
 

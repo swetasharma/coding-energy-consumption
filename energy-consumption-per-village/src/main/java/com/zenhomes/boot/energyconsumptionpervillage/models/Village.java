@@ -11,12 +11,15 @@ import java.util.Objects;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class Village {
+
     @Id
     @Positive( message = "You cannot have zero or negative village Id" )
     private String id;
+
     @NotBlank( message = "Village name cannot be null or empty" )
     @Size(min = 2, max = 30, message = "Village name must be 2-30 characters long")
     private String name;
+
     private LocalDateTime createdDate;
 
     public Village(){

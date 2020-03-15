@@ -1,5 +1,6 @@
 package com.zenhomes.boot.energyconsumptionpervillage.controllers;
 
+import com.zenhomes.boot.energyconsumptionpervillage.exceptions.VillageNotFoundException;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import com.zenhomes.boot.energyconsumptionpervillage.services.VillageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class VillageController {
     VillageService villageService;
 
     @GetMapping(value = "/villages/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Village> getVillageById(@PathVariable long id){
+    public ResponseEntity<Village> getVillageById(@PathVariable long id) throws VillageNotFoundException {
         Village village =  villageService.findById(id);
         return new ResponseEntity<>(village, HttpStatus.FOUND);
     }

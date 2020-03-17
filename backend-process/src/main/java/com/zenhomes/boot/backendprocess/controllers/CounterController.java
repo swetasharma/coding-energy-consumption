@@ -1,8 +1,8 @@
 package com.zenhomes.boot.backendprocess.controllers;
 
 import com.zenhomes.boot.backendprocess.dto.CounterRegister;
-import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
-import com.zenhomes.boot.energyconsumptionpervillage.services.CounterService;
+import com.zenhomes.boot.backendprocess.dto.EnergyConsumption;
+import com.zenhomes.boot.backendprocess.services.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -34,12 +35,20 @@ public class CounterController {
     @PostMapping("/counter_callback")
     public ResponseEntity<?> createCounterCallback(@Valid @RequestBody CounterRegister counterRegister) throws Exception{
         //counterService.save(counterRegister);
-        counterService.saveCounterQueueRecord(counterRegister);
+        for(int i = 0; i < 50; i++){
+            counterService.saveCounterQueueRecord(counterRegister, i);
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/consumption_report", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<EnergyConsumption>> consumptionReport(){
         return counterService.getEnergyConsumptionReport();
+    }
+
+    @PostMapping("/processdata")
+    public ResponseEntity<?> processdata() throws IOException {
+        counterService.processCounterData();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

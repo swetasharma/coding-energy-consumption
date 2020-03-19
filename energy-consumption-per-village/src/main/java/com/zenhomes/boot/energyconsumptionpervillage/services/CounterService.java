@@ -3,28 +3,25 @@ package com.zenhomes.boot.energyconsumptionpervillage.services;
 import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dao.CounterQueueDao;
 import com.zenhomes.boot.energyconsumptionpervillage.dao.VillageDao;
+import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterCallbackResponse;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
-import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterCallbackResponse;
 import com.zenhomes.boot.energyconsumptionpervillage.models.CounterQueue;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -33,6 +30,9 @@ public class CounterService{
     private static final Logger logger = LoggerFactory.getLogger(CounterService.class);
 
     private String url = "https://europe-west2-zenhomes-development-project.cloudfunctions.net/counters/";
+
+    @Autowired
+    private TaskExecutor taskExecutor;
 
     @Autowired
     private CounterDao counterDao;
@@ -51,39 +51,91 @@ public class CounterService{
         return new RestTemplate();
     }
 
-    public void save(CounterRegister counterRegister) throws IOException{
-        //Here we are getting village name and id by hitting external url
-        Village village = this.getVillageDetails(counterRegister.getCounter_id());
-        if(villageDao.isVillageExists(Long.parseLong(village.getId()))){
-            villageDao.updateName(new Village(village.getId(), village.getName()));
-        }else{
-            villageDao.save(new Village (village.getId(), village.getName()));
+    @Async("threadPoolTaskExecutor")
+    public void processCounterData() throws IOException {
+
+        List<CounterQueue> counterQueueList = new ArrayList<>();
+        long startTime = System.nanoTime();
+
+        while(true){
+
+            //System.out.println("START Execute method asynchronously." + Thread.currentThread().getName());
+            counterQueueList = counterQueueDao.findAll();
+
+            if(counterQueueList.size() <= 0){
+                long endTime   = System.nanoTime();
+                long totalTime = endTime - startTime;
+                long totalTimeInSeconds = TimeUnit.SECONDS.convert(totalTime, TimeUnit.NANOSECONDS);
+                System.out.println(totalTimeInSeconds+" SECONDS ");
+                break;
+            }
+
+            for(CounterQueue counterQueue : counterQueueList)
+            {
+                try {
+
+                    Thread.sleep(115);
+
+                    taskExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("START Execute method asynchronously." + Thread.currentThread().getName());
+                            //Here we are getting village name and id by hitting external url
+                            Village village = this.getVillageDetails(counterQueue.getCounterId());
+                            if(villageDao.isVillageExists(Long.parseLong(village.getId()))){
+                                villageDao.updateName(new Village(village.getId(), village.getName()));
+                            }else{
+                                villageDao.save(new Village (village.getId(), village.getName()));
+                            }
+
+                            Counter counter = new Counter();
+                            counter.setCounterId(counterQueue.getCounterId());
+                            counter.setAmount(counterQueue.getAmount());
+                            counter.setVillageId(Long.parseLong(village.getId()));
+                            counter.setCreatedDate(counterQueue.getCreatedDate());
+
+                            double lastRecordAmount = this.getLastRecordToCalculateNetAmount(counter);
+                            if(lastRecordAmount == 0.0){
+                                counter.setNetAmount(counterQueue.getAmount());
+                            }else{
+                                counter.setNetAmount(counterQueue.getAmount() - lastRecordAmount);
+                            }
+
+                            counterDao.save(counter);
+                            counterQueueDao.update(true, counterQueue.getId());
+                            System.out.println("End  Execute method asynchronously." + Thread.currentThread().getName());
+                        }
+                        /**
+                         * Here return values 0.0 represents that it is a first record else ot gets last record to calculate the net amount
+                         * @param counter
+                         * @return
+                         */
+                        private double getLastRecordToCalculateNetAmount(Counter counter) {
+                            return counterDao.getLastRecordToCalculateNetAmount(counter);
+                        }
+                        /**
+                         * Hits the external link and get the village name and village id
+                         */
+                        private Village getVillageDetails(long counterId) {
+                            //Convert village endpoint from json to POJO
+                            restTemplate.getMessageConverters().add( new MappingJackson2HttpMessageConverter() );
+                            CounterCallbackResponse counterCallbackResponse = restTemplate.getForObject(url.concat(String.valueOf(counterId)), CounterCallbackResponse.class);
+                            return counterCallbackResponse.getVillage();
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
+            }
         }
-        Counter counter = new Counter();
-        counter.setCounterId(counterRegister.getCounter_id());
-        counter.setAmount(counterRegister.getAmount());
-        counter.setVillageId(Long.parseLong(village.getId()));
-        counter.setCreatedDate(LocalDateTime.now());
-        double lastRecordAmount = this.getLastRecordToCalculateNetAmount(counter);
-        if(lastRecordAmount == 0.0){
-            counter.setNetAmount(counterRegister.amount);
-        }else{
-            counter.setNetAmount(counterRegister.amount - lastRecordAmount);
-        }
-        counterDao.save(counter);
     }
 
     /**
-     * Hits the external link and get the village name and village id
+     * Get energy consumption report for last 24 hours by default
+     * @return
      */
-    private Village getVillageDetails(long counterId) throws IOException
-    {
-        //Convert village endpoint from json to POJO
-        restTemplate.getMessageConverters().add( new MappingJackson2HttpMessageConverter() );
-        CounterCallbackResponse counterCallbackResponse = restTemplate.getForObject(url.concat(String.valueOf(counterId)), CounterCallbackResponse.class);
-        return counterCallbackResponse.getVillage();
-    }
-
     public Map<String, List<EnergyConsumption>> getEnergyConsumptionReport(){
         List<EnergyConsumption> energyConsumptionsList = new ArrayList<>();
         Iterator<Map<String, Object>> iterator = counterDao.consumptionReport().iterator();
@@ -103,15 +155,6 @@ public class CounterService{
         energyConsumptionReport.put("villages", energyConsumptionsList);
 
         return energyConsumptionReport;
-    }
-
-    /**
-     * Here return values 0.0 represents that it is a first record else ot gets last record to calculate the net amount
-     * @param counter
-     * @return
-     */
-    public double getLastRecordToCalculateNetAmount(Counter counter){
-        return counterDao.getLastRecordToCalculateNetAmount(counter);
     }
 
     /**

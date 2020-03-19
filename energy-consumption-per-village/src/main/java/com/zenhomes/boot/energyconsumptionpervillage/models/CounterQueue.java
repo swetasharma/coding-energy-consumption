@@ -1,10 +1,15 @@
 package com.zenhomes.boot.energyconsumptionpervillage.models;
 
+import org.springframework.data.annotation.Id;
+
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class CounterQueue {
+
+    @Id
+    private long id;
 
     @Positive( message = "You cannot have zero or negative counterId" )
     private long counterId;
@@ -25,6 +30,14 @@ public class CounterQueue {
         this.amount = amount;
         this.processed = 0;
         this.createdDate = LocalDateTime.now();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getCounterId() {
@@ -64,22 +77,24 @@ public class CounterQueue {
         if (this == o) return true;
         if (!(o instanceof CounterQueue)) return false;
         CounterQueue that = (CounterQueue) o;
-        return counterId == that.counterId &&
-                Double.compare(that.amount, amount) == 0 &&
-                processed == that.processed &&
-                Objects.equals(createdDate, that.createdDate);
+        return getId() == that.getId() &&
+                getCounterId() == that.getCounterId() &&
+                Double.compare(that.getAmount(), getAmount()) == 0 &&
+                getProcessed() == that.getProcessed() &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(counterId, amount, processed, createdDate);
+        return Objects.hash(getId(), getCounterId(), getAmount(), getProcessed(), getCreatedDate());
     }
 
     @Override
     public String toString() {
         return "CounterQueue{" +
-                "counterId=" + counterId +
+                "id=" + id +
+                ", counterId=" + counterId +
                 ", amount=" + amount +
                 ", processed=" + processed +
                 ", createdDate=" + createdDate +

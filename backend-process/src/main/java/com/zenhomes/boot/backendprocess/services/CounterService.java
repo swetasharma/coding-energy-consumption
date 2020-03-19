@@ -1,6 +1,5 @@
 package com.zenhomes.boot.backendprocess.services;
 
-import com.zenhomes.boot.backendprocess.components.MyThread;
 import com.zenhomes.boot.backendprocess.dao.CounterDao;
 import com.zenhomes.boot.backendprocess.dao.CounterQueueDao;
 import com.zenhomes.boot.backendprocess.dao.VillageDao;
@@ -13,7 +12,6 @@ import com.zenhomes.boot.backendprocess.models.Village;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -35,9 +33,6 @@ public class CounterService{
 
     @Autowired
     private TaskExecutor taskExecutor;
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     @Autowired
     private CounterDao counterDao;
@@ -175,10 +170,10 @@ public class CounterService{
     /**
      * saving all the counter data to queue
      */
-    public void saveCounterQueueRecord(CounterRegister counterRegister, int i){
+    public void saveCounterQueueRecord(CounterRegister counterRegister){
         CounterQueue counterQueue = new CounterQueue();
         counterQueue.setCounterId(counterRegister.getCounter_id());
-        counterQueue.setAmount(counterRegister.getAmount() + i );
+        counterQueue.setAmount(counterRegister.getAmount());
         counterQueueDao.save(counterQueue);
     }
 }

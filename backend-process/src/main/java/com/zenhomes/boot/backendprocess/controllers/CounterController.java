@@ -34,10 +34,7 @@ public class CounterController {
      */
     @PostMapping("/counter_callback")
     public ResponseEntity<?> createCounterCallback(@Valid @RequestBody CounterRegister counterRegister) throws Exception{
-        //counterService.save(counterRegister);
-        for(int i = 0; i < 2000; i++){
-            counterService.saveCounterQueueRecord(counterRegister, i);
-        }
+        counterService.saveCounterQueueRecord(counterRegister);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

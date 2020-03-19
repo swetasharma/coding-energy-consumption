@@ -52,7 +52,7 @@ public class CounterService{
         return new RestTemplate();
     }
 
-    @Scheduled(cron="* * * * * ")
+    @Scheduled(cron = "0 * * * * ?")
     @Async("threadPoolTaskExecutor")
     public void processCounterData() throws IOException {
 

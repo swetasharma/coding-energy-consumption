@@ -1,4 +1,4 @@
-package com.zenhomes.boot.energyconsumptionpervillage;
+package com.zenhomes.boot.backendprocess;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,9 +8,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-public class EnergyConsumptionPerVillageApplication {
+public class BackendProcessApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EnergyConsumptionPerVillageApplication.class, args);
+		SpringApplication.run(BackendProcessApplication.class, args);
 	}
+
 }

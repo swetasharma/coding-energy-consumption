@@ -1,4 +1,4 @@
-package com.zenhomes.boot.energyconsumptionpervillage.exceptions;
+package com.zenhomes.boot.backendprocess.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

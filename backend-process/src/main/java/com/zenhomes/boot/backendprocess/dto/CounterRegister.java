@@ -1,4 +1,4 @@
-package com.zenhomes.boot.energyconsumptionpervillage.dto;
+package com.zenhomes.boot.backendprocess.dto;
 
 import javax.validation.constraints.Positive;
 

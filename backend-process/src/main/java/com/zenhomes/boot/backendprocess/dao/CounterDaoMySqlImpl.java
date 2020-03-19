@@ -1,5 +1,5 @@
-package com.zenhomes.boot.energyconsumptionpervillage.dao;
-import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
+package com.zenhomes.boot.backendprocess.dao;
+import com.zenhomes.boot.backendprocess.models.Counter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

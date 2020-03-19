@@ -42,12 +42,12 @@ public class CounterControllerIntegrationTests {
 
     @Test
     public void verifyHTTPRequestPOSTCounterCallback() throws Exception {
-        this.mockMvc.perform( post("/counter_callback").contentType("application/json")).andExpect(status().isOk());
+        this.mockMvc.perform( post("/counter_callback").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
     }
 
     @Test
     public void verifyHTTPRequestGETEnergyConsumptionReport() throws Exception {
-        this.mockMvc.perform( get("/consumption_report?duration=24h").contentType("application/json")).andExpect(status().isOk());
+        this.mockMvc.perform( get("/consumption_report?duration=24h").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test

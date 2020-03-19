@@ -1,4 +1,4 @@
-package com.zenhomes.boot.energyconsumptionpervillage.models;
+package com.zenhomes.boot.backendprocess.models;
 
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;

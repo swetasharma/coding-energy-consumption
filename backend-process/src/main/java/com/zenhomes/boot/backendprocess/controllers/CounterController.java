@@ -1,8 +1,8 @@
-package com.zenhomes.boot.energyconsumptionpervillage.controllers;
+package com.zenhomes.boot.backendprocess.controllers;
 
-import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
-import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
-import com.zenhomes.boot.energyconsumptionpervillage.services.CounterService;
+import com.zenhomes.boot.backendprocess.dto.CounterRegister;
+import com.zenhomes.boot.backendprocess.dto.EnergyConsumption;
+import com.zenhomes.boot.backendprocess.services.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

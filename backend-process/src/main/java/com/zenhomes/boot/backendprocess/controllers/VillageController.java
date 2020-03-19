@@ -1,8 +1,8 @@
-package com.zenhomes.boot.energyconsumptionpervillage.controllers;
+package com.zenhomes.boot.backendprocess.controllers;
 
-import com.zenhomes.boot.energyconsumptionpervillage.exceptions.VillageNotFoundException;
-import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
-import com.zenhomes.boot.energyconsumptionpervillage.services.VillageService;
+import com.zenhomes.boot.backendprocess.exceptions.VillageNotFoundException;
+import com.zenhomes.boot.backendprocess.models.Village;
+import com.zenhomes.boot.backendprocess.services.VillageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

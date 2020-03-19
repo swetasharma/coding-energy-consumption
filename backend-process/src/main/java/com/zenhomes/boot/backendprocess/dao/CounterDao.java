@@ -1,6 +1,6 @@
-package com.zenhomes.boot.energyconsumptionpervillage.dao;
+package com.zenhomes.boot.backendprocess.dao;
 
-import com.zenhomes.boot.energyconsumptionpervillage.models.Counter;
+import com.zenhomes.boot.backendprocess.models.Counter;
 
 import java.util.List;
 import java.util.Map;

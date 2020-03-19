@@ -1,4 +1,4 @@
-package com.zenhomes.boot.energyconsumptionpervillage.models;
+package com.zenhomes.boot.backendprocess.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;

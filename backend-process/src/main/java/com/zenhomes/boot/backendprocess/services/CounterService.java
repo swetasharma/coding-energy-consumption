@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -51,6 +52,7 @@ public class CounterService{
         return new RestTemplate();
     }
 
+    @Scheduled(cron = "0 43 19 * * ?")
     @Async("threadPoolTaskExecutor")
     public void processCounterData() throws IOException {
 

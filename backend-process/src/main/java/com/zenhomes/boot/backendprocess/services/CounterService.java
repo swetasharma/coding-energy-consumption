@@ -59,29 +59,32 @@ public class CounterService{
     @Async("threadPoolTaskExecutor")
     public void processCounterData() throws IOException {
 
-        taskExecutor.execute( new Runnable() {
+    List<CounterQueue> counterQueueList = new ArrayList<>();
+    long startTime = System.nanoTime();
 
-            @Override
-            public void run() {
+    while(true){
 
-                List<CounterQueue> counterQueueList = new ArrayList<>();
-                long startTime = System.nanoTime();
+        //System.out.println("START Execute method asynchronously." + Thread.currentThread().getName());
+        counterQueueList = counterQueueDao.findAll();
 
-                while(true){
+        if(counterQueueList.size() <= 0){
+            long endTime   = System.nanoTime();
+            long totalTime = endTime - startTime;
+            long totalTimeInSeconds = TimeUnit.SECONDS.convert(totalTime, TimeUnit.NANOSECONDS);
+            System.out.println(totalTimeInSeconds+" SECONDS ");
+            break;
+        }
 
-                    System.out.println("START Execute method asynchronously." + Thread.currentThread().getName());
-                    counterQueueList = counterQueueDao.findAll();
+        for(CounterQueue counterQueue : counterQueueList)
+        {
+            try {
 
-                    if(counterQueueList.size() <= 0){
-                        long endTime   = System.nanoTime();
-                        long totalTime = endTime - startTime;
-                        long totalTimeInSeconds = TimeUnit.SECONDS.convert(totalTime, TimeUnit.NANOSECONDS);
-                        System.out.println(totalTimeInSeconds+" SECONDS ");
-                        break;
-                    }
+                Thread.sleep(115);
 
-                    for(CounterQueue counterQueue : counterQueueList)
-                    {
+                taskExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("START Execute method asynchronously." + Thread.currentThread().getName());
                         //Here we are getting village name and id by hitting external url
                         Village village = this.getVillageDetails(counterQueue.getCounterId());
                         if(villageDao.isVillageExists(Long.parseLong(village.getId()))){
@@ -107,24 +110,26 @@ public class CounterService{
                         counterQueueDao.update(true, counterQueue.getId());
                         System.out.println("End  Execute method asynchronously." + Thread.currentThread().getName());
                     }
-                }
+
+                    private double getLastRecordToCalculateNetAmount(Counter counter) {
+                        return counterDao.getLastRecordToCalculateNetAmount(counter);
+                    }
+
+                    private Village getVillageDetails(long counterId) {
+                        //Convert village endpoint from json to POJO
+                        restTemplate.getMessageConverters().add( new MappingJackson2HttpMessageConverter() );
+                        CounterCallbackResponse counterCallbackResponse = restTemplate.getForObject(url.concat(String.valueOf(counterId)), CounterCallbackResponse.class);
+                        return counterCallbackResponse.getVillage();
+                    }
+                });
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
-            private double getLastRecordToCalculateNetAmount(Counter counter) {
-                return counterDao.getLastRecordToCalculateNetAmount(counter);
-            }
 
-            private Village getVillageDetails(long counterId) {
-                //Convert village endpoint from json to POJO
-                restTemplate.getMessageConverters().add( new MappingJackson2HttpMessageConverter() );
-                CounterCallbackResponse counterCallbackResponse = restTemplate.getForObject(url.concat(String.valueOf(counterId)), CounterCallbackResponse.class);
-                return counterCallbackResponse.getVillage();
-            }
-        });
-
-
-
+        }
     }
+}
 
     /**
      * Hits the external link and get the village name and village id

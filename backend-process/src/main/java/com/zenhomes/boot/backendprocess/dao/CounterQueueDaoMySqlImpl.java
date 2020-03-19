@@ -25,7 +25,7 @@ public class CounterQueueDaoMySqlImpl implements CounterQueueDao{
      * @return
      */
     public List<CounterQueue> findAll() {
-        String sql = " SELECT id, counterId, amount, createdDate FROM counterqueue WHERE processed = 0 ORDER BY createdDate LIMIT 0, 5 ";
+        String sql = " SELECT id, counterId, amount, createdDate FROM counterqueue WHERE processed = 0 ORDER BY createdDate LIMIT 0, 25 ";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(CounterQueue.class));
     }
 

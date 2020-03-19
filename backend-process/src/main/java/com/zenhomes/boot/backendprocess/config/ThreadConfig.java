@@ -11,15 +11,20 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 public class ThreadConfig {
 
+    private static final int CORE_POOL_SIZE = 100;
+    private static final int MAX_POOL_SiZE  = 100;
+    private static final int QUEUE_CAPACITY = 200;
+
     @Bean("threadPoolTaskExecutor")
     @Primary
     public TaskExecutor threadPoolTaskExecutor() {
 
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(100);
-        executor.setWaitForTasksToCompleteOnShutdown(true);
-        executor.setThreadNamePrefix("Async-");
+        executor.setCorePoolSize(CORE_POOL_SIZE);
+        executor.setMaxPoolSize(MAX_POOL_SiZE);
+        executor.setQueueCapacity(QUEUE_CAPACITY);
+        executor.setWaitForTasksToCompleteOnShutdown(true)  ;
+        executor.setThreadNamePrefix("Energy-Consumption-Per-Village-Thread");
         executor.initialize();
 
         return executor;

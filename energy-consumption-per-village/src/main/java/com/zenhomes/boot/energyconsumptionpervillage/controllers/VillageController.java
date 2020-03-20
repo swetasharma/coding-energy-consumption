@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class VillageController {
     @Autowired
-    VillageService villageService;
+    private VillageService villageService;
 
     @GetMapping(value = "/villages/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Village> getVillageById(@PathVariable long id) throws VillageNotFoundException {

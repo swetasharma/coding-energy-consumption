@@ -26,7 +26,7 @@ public class CounterController {
      * get bean for counter servicsele
      */
     @Autowired
-    CounterService counterService;
+    private CounterService counterService;
 
     /**
      * Create counter

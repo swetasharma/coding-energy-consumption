@@ -74,25 +74,4 @@ public class CounterControllerUnitTests {
         assertEquals(expectedResult.size(), actualResult.size());
 
     }
-
-    @Test
-    public void postCounterCallbackWhenAmountIsNegativeShouldThrowException() throws Exception{
-
-    }
-
-    //understand how you can use this
-    @Test
-    void contains_basic(){
-        String str = "abcdefgh";
-        boolean result = str.contains("ijk");
-        assertFalse(result);
-    }
-
-    @Test
-    void toUpperCaseBasic(){
-        String str = "abcd";
-        String result = str.toUpperCase();
-
-
-    }
 }

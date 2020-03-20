@@ -72,4 +72,32 @@ public class CounterControllerIntegrationTests {
                 .andExpect((ResultMatcher) jsonPath("$['villages'][0].village_name", energyConsumption.village_name))
                 .andExpect((ResultMatcher) jsonPath("$['villages'][0].consumption", energyConsumption.consumption));
     }
+
+    @Test
+    public void getEnergyConsumptionReportMultipleRecords() throws Exception{
+        List<EnergyConsumption> energyConsumptionsList = new ArrayList<>();
+
+        EnergyConsumption energyConsumptionFirstRecord = new EnergyConsumption();
+        energyConsumptionFirstRecord.setVillage_name("Mumbai");
+        energyConsumptionFirstRecord.setConsumption(6000);
+        energyConsumptionsList.add(energyConsumptionFirstRecord);
+
+        EnergyConsumption energyConsumptionSecondRecord = new EnergyConsumption();
+        energyConsumptionSecondRecord.setVillage_name("Pune");
+        energyConsumptionSecondRecord.setConsumption(5000);
+        energyConsumptionsList.add(energyConsumptionSecondRecord);
+
+        Map<String, List<EnergyConsumption>> energyConsumptionReport = new HashMap<>();
+        energyConsumptionReport.put("villages", energyConsumptionsList);
+
+        given(counterController.consumptionReport()).willReturn(energyConsumptionReport);
+
+        mockMvc.perform(get("/consumption_report?duration=24h").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$['villages']", hasSize(2)))
+                .andExpect((ResultMatcher) jsonPath("$['villages'][0].village_name", energyConsumptionFirstRecord.village_name))
+                .andExpect((ResultMatcher) jsonPath("$['villages'][0].consumption", energyConsumptionFirstRecord.consumption))
+                .andExpect((ResultMatcher) jsonPath("$['villages'][0].village_name", energyConsumptionSecondRecord.village_name))
+                .andExpect((ResultMatcher) jsonPath("$['villages'][0].consumption", energyConsumptionSecondRecord.consumption));
+    }
 }

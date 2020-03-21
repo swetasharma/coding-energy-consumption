@@ -3,6 +3,7 @@ package com.zenhomes.boot.energyconsumptionpervillage.dao;
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VillageRepositoryUnitTests {

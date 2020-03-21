@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CounterQueueUnitTests {
+public class CounterQueueRepositoryUnitTests {
 
     @Autowired
     private CounterQueueDaoMySqlImpl counterQueueDaoMySql;

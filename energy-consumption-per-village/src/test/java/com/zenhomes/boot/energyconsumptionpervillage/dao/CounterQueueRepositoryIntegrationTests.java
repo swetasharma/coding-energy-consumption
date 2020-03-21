@@ -7,14 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.AutoConfigureDataJdbc;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 @AutoConfigureDataJdbc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class CounterQueueIntegrationTests {
+public class CounterQueueRepositoryIntegrationTests {
 
     @Autowired
     private TestEntityManager entityManager;
 
+    //We are injecting or autowiring CounterQueueDaoMySqlImpl component because thats the component we want to test
     @Autowired
     private CounterQueueDaoMySqlImpl counterQueueDaoMySql;
 

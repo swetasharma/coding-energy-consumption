@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,12 +23,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = CounterController.class)
+@SpringBootTest
 @AutoConfigureMockMvc
 public class CounterControllerIntegrationTests {
 
     /**
-     * spring boot replaces the real bean with mock
+     * spring boot replaces the real bean with mock to test our controller
      */
     @Autowired
     private MockMvc mockMvc;
@@ -37,7 +37,7 @@ public class CounterControllerIntegrationTests {
     private CounterController counterController;
 
     @Test
-    public void contextLoads(){
+    public void contextLoads() {
         Assertions.assertNotNull(mockMvc);
         Assertions.assertNotNull(counterController);
     }

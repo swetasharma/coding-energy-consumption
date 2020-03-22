@@ -127,8 +127,6 @@ public class CounterService{
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-
-
             }
         }
     }

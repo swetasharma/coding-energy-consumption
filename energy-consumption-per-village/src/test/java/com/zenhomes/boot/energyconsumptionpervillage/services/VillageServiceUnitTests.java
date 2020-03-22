@@ -1,4 +1,4 @@
-package com.zenhomes.boot.energyconsumptionpervillage.dao;
+package com.zenhomes.boot.energyconsumptionpervillage.services;
 
 import com.zenhomes.boot.energyconsumptionpervillage.models.Village;
 import org.junit.jupiter.api.Test;
@@ -9,23 +9,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class VillageRepositoryUnitTests {
+public class VillageServiceUnitTests {
 
     @Autowired
-    private VillageDaoMySqlImpl villageDaoMySql;
+    VillageService villageService;
 
     @Test
-    public void findById(){
-        //given
+    public void save(){
         Village village = new Village();
         village.setId("1");
         village.setName("Jaipur");
 
-        //when
-        Village villageActualRecord = villageDaoMySql.findById(Long.parseLong(village.getId()));
+        villageService.save(village);
 
-        //then
+        Village villageActualRecord = villageService.findById(Long.parseLong(village.getId()));
         assertNotNull(villageActualRecord);
         assertEquals(village.getName(), villageActualRecord.getName());
+        assertEquals(village.getId(), villageActualRecord.getId());
+    }
+
+    @Test
+    public void testGetVillageById(){
+        Village village = villageService.findById(1);
+        assertNotNull(village);
+        assertEquals(1, village.getId());
     }
 }

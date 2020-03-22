@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -19,8 +18,6 @@ import java.util.Map;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -29,17 +26,14 @@ public class CounterControllerIntegrationTests {
 
     /**
      * spring boot replaces the real bean with mock to test our controller
+     * MockMvc is simply a handy system built into Spring Framework to allow us to make calls to a REST API
      */
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private CounterController counterController;
-
     @Test
     public void contextLoads() {
         Assertions.assertNotNull(mockMvc);
-        Assertions.assertNotNull(counterController);
     }
 
     @Test
@@ -63,8 +57,6 @@ public class CounterControllerIntegrationTests {
 
         Map<String, List<EnergyConsumption>> energyConsumptionReport = new HashMap<>();
         energyConsumptionReport.put("villages", energyConsumptionsList);
-
-        given(counterController.consumptionReport()).willReturn(energyConsumptionReport);
 
         mockMvc.perform(get("/consumption_report?duration=24h").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -90,14 +82,12 @@ public class CounterControllerIntegrationTests {
         Map<String, List<EnergyConsumption>> energyConsumptionReport = new HashMap<>();
         energyConsumptionReport.put("villages", energyConsumptionsList);
 
-        given(counterController.consumptionReport()).willReturn(energyConsumptionReport);
-
         mockMvc.perform(get("/consumption_report?duration=24h").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$['villages']", hasSize(2)))
                 .andExpect((ResultMatcher) jsonPath("$['villages'][0].village_name", energyConsumptionFirstRecord.village_name))
                 .andExpect((ResultMatcher) jsonPath("$['villages'][0].consumption", energyConsumptionFirstRecord.consumption))
-                .andExpect((ResultMatcher) jsonPath("$['villages'][0].village_name", energyConsumptionSecondRecord.village_name))
-                .andExpect((ResultMatcher) jsonPath("$['villages'][0].consumption", energyConsumptionSecondRecord.consumption));
+                .andExpect((ResultMatcher) jsonPath("$['villages'][1].village_name", energyConsumptionSecondRecord.village_name))
+                .andExpect((ResultMatcher) jsonPath("$['villages'][1].consumption", energyConsumptionSecondRecord.consumption));
     }
 }

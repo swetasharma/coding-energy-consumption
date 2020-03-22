@@ -3,15 +3,18 @@ import com.zenhomes.boot.energyconsumptionpervillage.dto.CounterRegister;
 import com.zenhomes.boot.energyconsumptionpervillage.dto.EnergyConsumption;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@SpringBootTest
 public class CounterControllerUnitTests {
 
     @Autowired
@@ -34,7 +37,7 @@ public class CounterControllerUnitTests {
 
         assertEquals(1, actualResult.entrySet().size());
         assertEquals(true, actualResult.entrySet().iterator().hasNext());
-        assertNull(actualResult.get("villages"));
+        assertNotNull(actualResult.get("villages"));
         assertEquals(expectedResult.get("villages"), actualResult.getOrDefault("villages", actualResult.get("villages")));
         assertEquals(1, actualResult.size());
         assertEquals(true, actualResult.get("villages").contains("counter_id"));
@@ -76,6 +79,5 @@ public class CounterControllerUnitTests {
         assertNotNull(actualResult);
         assertEquals(expectedResult.get("villages"), actualResult.getOrDefault("villages", actualResult.get("villages")));
         assertEquals(expectedResult.size(), actualResult.size());
-
     }
 }

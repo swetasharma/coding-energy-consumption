@@ -3,12 +3,16 @@ package com.zenhomes.boot.energyconsumptionpervillage.dao;
 import com.zenhomes.boot.energyconsumptionpervillage.models.CounterQueue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@SpringBootTest
 public class CounterQueueRepositoryUnitTests {
 
     @Autowired
@@ -31,6 +35,8 @@ public class CounterQueueRepositoryUnitTests {
         List<CounterQueue> counterQueueList = new ArrayList<>();
         counterQueueList = counterQueueDaoMySql.findAll();
 
+        assertNotNull(counterQueueList);
+        assertEquals(1, counterQueueList.size());
         assertEquals(false, counterQueueList.isEmpty());
         assertEquals(1, counterQueueList.get(0).getId());
         assertEquals(1, counterQueueList.get(0).getCounterId());
@@ -39,7 +45,7 @@ public class CounterQueueRepositoryUnitTests {
     }
 
     @Test
-    public void processCounterQueueRecord(){
+    public void setProcessFlagCounterQueueRecord(){
         //given
         CounterQueue counterQueue = new CounterQueue();
         counterQueue.setId(1);
@@ -56,6 +62,8 @@ public class CounterQueueRepositoryUnitTests {
         List<CounterQueue> counterQueueList = new ArrayList<>();
         counterQueueList = counterQueueDaoMySql.findAll();
 
+        assertNotNull(counterQueueList);
+        assertEquals(1, counterQueueList.size());
         assertEquals(false, counterQueueList.isEmpty());
         assertEquals(1, counterQueueList.get(0).getId());
         assertEquals(1, counterQueueList.get(0).getCounterId());
@@ -88,6 +96,7 @@ public class CounterQueueRepositoryUnitTests {
         List<CounterQueue> counterQueueList = new ArrayList<>();
         counterQueueList = counterQueueDaoMySql.findAll();
 
+        assertNotNull(counterQueueList);
         assertEquals(false, counterQueueList.isEmpty());
         assertEquals(2, counterQueueList.size());
 

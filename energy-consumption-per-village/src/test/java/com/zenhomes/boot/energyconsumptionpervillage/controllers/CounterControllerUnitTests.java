@@ -37,11 +37,6 @@ public class CounterControllerUnitTests {
 
         assertEquals(1, actualResult.entrySet().size());
         assertEquals(true, actualResult.entrySet().iterator().hasNext());
-        assertNotNull(actualResult.get("villages"));
-        assertEquals(expectedResult.get("villages"), actualResult.getOrDefault("villages", actualResult.get("villages")));
-        assertEquals(1, actualResult.size());
-        assertEquals(true, actualResult.get("villages").contains("counter_id"));
-        assertEquals(true, actualResult.get("villages").contains("amount"));
 
     }
 

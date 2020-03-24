@@ -43,5 +43,6 @@ public class CounterServiceUnitTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }

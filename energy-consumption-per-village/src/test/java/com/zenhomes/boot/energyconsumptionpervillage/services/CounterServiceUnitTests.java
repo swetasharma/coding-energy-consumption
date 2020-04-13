@@ -19,6 +19,7 @@ public class CounterServiceUnitTests {
         counterRegister.setCounter_id(1);
         counterRegister.setAmount(1000);
         counterService.saveCounterQueueRecord(counterRegister);
+        //Assertion part is pending
     }
 
     @Test
@@ -43,6 +44,6 @@ public class CounterServiceUnitTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        //Assertion part is pending
     }
 }
